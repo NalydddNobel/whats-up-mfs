@@ -42,7 +42,7 @@ namespace Polarities.NPCs.Enemies.Fractal
             this.SetModBiome<FractalBiome>();
         }
 
-        public override void ScaleExpertStats(int numPlayers, float bossLifeScale)
+        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)/* tModPorter Note: bossLifeScale -> balance (bossAdjustment is different, see the docs for details) */
         {
             NPC.lifeMax = 160;
         }
@@ -73,7 +73,7 @@ namespace Polarities.NPCs.Enemies.Fractal
             }
             NPC.ai[0]--;
         }
-        public override void OnHitByItem(Player player, Item item, int damage, float knockback, bool crit)
+        public override void OnHitByItem(Player player, Item item, NPC.HitInfo hit, int damageDone)
         {
             if (Main.expertMode)
             {
@@ -87,7 +87,7 @@ namespace Polarities.NPCs.Enemies.Fractal
             }
         }
 
-        public override void OnHitByProjectile(Projectile projectile, int damage, float knockback, bool crit)
+        public override void OnHitByProjectile(Projectile projectile, NPC.HitInfo hit, int damageDone)
         {
             if (Main.expertMode)
             {

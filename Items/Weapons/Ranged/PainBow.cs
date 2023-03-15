@@ -16,7 +16,7 @@ namespace Polarities.Items.Weapons.Ranged
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
         }
 
         public override void SetDefaults()
@@ -59,7 +59,7 @@ namespace Polarities.Items.Weapons.Ranged
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Rainbow Arrow");
+            // DisplayName.SetDefault("Rainbow Arrow");
 
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 40;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;

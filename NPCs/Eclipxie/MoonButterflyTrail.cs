@@ -15,7 +15,7 @@ namespace Polarities.NPCs.Eclipxie
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Lunar Trail");
+            // DisplayName.SetDefault("Lunar Trail");
         }
 
         public override void SetDefaults()
@@ -49,7 +49,7 @@ namespace Polarities.NPCs.Eclipxie
             Projectile.velocity.Y = (player.Center.Y - Projectile.Center.Y) / (float)Math.Sqrt((player.Center.X - Projectile.Center.X) * (player.Center.X - Projectile.Center.X) + (player.Center.Y - Projectile.Center.Y) * (player.Center.Y - Projectile.Center.Y));
         }
 
-        public override void OnHitPlayer(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             target.AddBuff(BuffID.Frostburn, 300, true);
         }

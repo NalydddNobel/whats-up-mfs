@@ -8,8 +8,8 @@ namespace Polarities.Items
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (1);
-            DisplayName.SetDefault("Strange Clock");
+            Item.ResearchUnlockCount = (1);
+            // DisplayName.SetDefault("Strange Clock");
         }
 
         public override void SetDefaults()

@@ -40,15 +40,15 @@ namespace Polarities.Items.Weapons.Melee.Warhammers
             base.UseAnimation(player);
         }
 
-        public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
+        public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
         {
             if (!hasExploded)
             {
                 hasExploded = true;
-                Projectile.NewProjectile(player.GetSource_OnHit(target), GetHitboxCenter(player), Vector2.Zero, ProjectileType<ImpactorExplosion>(), damage, 0f, player.whoAmI);
+                Projectile.NewProjectile(player.GetSource_OnHit(target), GetHitboxCenter(player), Vector2.Zero, ProjectileType<ImpactorExplosion>(), hit.Damage, 0f, player.whoAmI);
             }
 
-            base.OnHitNPC(player, target, damage, knockBack, crit);
+            base.OnHitNPC(player, target, hit, damageDone);
         }
 
         public override void OnHitTiles(Player player)
@@ -86,7 +86,7 @@ namespace Polarities.Items.Weapons.Melee.Warhammers
             Projectile.hide = true;
         }
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             int defenseLoss = 12;
             int time = 900;

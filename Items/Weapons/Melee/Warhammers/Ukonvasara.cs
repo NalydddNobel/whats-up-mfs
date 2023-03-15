@@ -89,7 +89,7 @@ namespace Polarities.Items.Weapons.Melee.Warhammers
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("{$Mods.Polarities.ItemName.Ukonvasara}");
+            // DisplayName.SetDefault("{$Mods.Polarities.ItemName.Ukonvasara}");
         }
 
         public override void SetDefaults()

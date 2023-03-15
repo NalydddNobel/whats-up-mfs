@@ -345,7 +345,7 @@ namespace Polarities.NPCs.Enemies.Limestone
 
             public override void SetStaticDefaults()
             {
-                DisplayName.SetDefault("{$Mods.Polarities.ProjectileName.GlowYoDroplet}");
+                // DisplayName.SetDefault("{$Mods.Polarities.ProjectileName.GlowYoDroplet}");
 
                 ProjectileID.Sets.TrailCacheLength[Projectile.type] = 16;
                 ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
@@ -413,7 +413,7 @@ namespace Polarities.NPCs.Enemies.Limestone
                 }
             }
 
-            public override void OnHitPlayer(Player target, int damage, bool crit)
+            public override void OnHitPlayer(Player target, Player.HurtInfo info)
             {
                 target.AddBuff(BuffType<Buffs.Corroding>(), 15 * 60);
             }

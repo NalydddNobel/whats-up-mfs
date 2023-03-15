@@ -9,7 +9,7 @@ namespace Polarities.Items
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (2);
+            Item.ResearchUnlockCount = (2);
         }
 
         public override void SetDefaults()

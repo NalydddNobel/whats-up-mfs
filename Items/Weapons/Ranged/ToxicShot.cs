@@ -11,7 +11,7 @@ namespace Polarities.Items.Weapons.Ranged
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
         }
 
         public override void SetDefaults()
@@ -99,7 +99,7 @@ namespace Polarities.Items.Weapons.Ranged
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("{$Mods.Polarities.ProjectileName.SpitterVenom}");
+            // DisplayName.SetDefault("{$Mods.Polarities.ProjectileName.SpitterVenom}");
         }
 
         public override void SetDefaults()
@@ -125,7 +125,7 @@ namespace Polarities.Items.Weapons.Ranged
             Projectile.velocity.Y += 0.2f;
         }
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(BuffID.Venom, 300);
         }

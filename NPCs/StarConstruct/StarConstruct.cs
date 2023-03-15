@@ -1018,13 +1018,12 @@ namespace Polarities.NPCs.StarConstruct
             get => NPC.ai[0] == 4 && (NPC.localAI[0] == 1 || !Main.expertMode) && NPC.ai[1] >= 240 && NPC.ai[1] < 480;
         }
 
-        public override bool? CanHitNPC(NPC target)
-        {
-            if (canDamage)
-            {
-                return null;
-            }
-            return false;
+        public override bool? CanBeHitByItem(Player player, Item item) {
+            return canDamage ? null : false;
+        }
+
+        public override bool? CanBeHitByProjectile(Projectile projectile) {
+            return canDamage ? null : false;
         }
 
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
@@ -1301,9 +1300,9 @@ namespace Polarities.NPCs.StarConstruct
             NPC.dontTakeDamage = true;
         }
 
-        public override void ScaleExpertStats(int numPlayers, float bossLifeScale)
+        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)/* tModPorter Note: bossLifeScale -> balance (bossAdjustment is different, see the docs for details) */
         {
-            NPC.lifeMax = (int)(1000 * bossLifeScale);
+            NPC.lifeMax = (int)(1000 * balance);
         }
 
         public override void AI()

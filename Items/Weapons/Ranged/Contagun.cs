@@ -17,7 +17,7 @@ namespace Polarities.Items.Weapons.Ranged
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
             PolaritiesItem.IsFlawless.Add(Type);
         }
 
@@ -212,9 +212,9 @@ namespace Polarities.Items.Weapons.Ranged
             }
         }
 
-        public override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
         {
-            damage = (int)(damage * Projectile.localAI[1]);
+            modifiers.SourceDamage *= Projectile.localAI[1];
             Projectile.localAI[1] *= 0.95f;
         }
 
@@ -309,7 +309,7 @@ namespace Polarities.Items.Weapons.Ranged
             return Projectile.ai[0] == 0 ? null : false;
         }
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             Projectile.ai[0] = target.whoAmI + 1;
 

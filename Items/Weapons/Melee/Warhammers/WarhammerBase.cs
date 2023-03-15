@@ -37,10 +37,10 @@ namespace Polarities.Items.Weapons.Melee.Warhammers
 
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
         }
 
-        public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
+        public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
         {
             Hit(player, target, DefenseLoss, DebuffTime);
         }

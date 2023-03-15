@@ -1231,7 +1231,7 @@ namespace Polarities.NPCs.Esophage
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
         }
 
-        public override void OnHitPlayer(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             target.AddBuff(BuffID.Ichor, 60 * 15);
         }
@@ -1322,7 +1322,7 @@ namespace Polarities.NPCs.Esophage
             Projectile.velocity += (goalVelocity - Projectile.velocity) / Projectile.timeLeft;
         }
 
-        public override void OnHitPlayer(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             target.AddBuff(BuffID.CursedInferno, 60 * 4);
             Projectile.Kill();
@@ -1378,7 +1378,7 @@ namespace Polarities.NPCs.Esophage
             return CustomCollision.CheckAABBvDisc(targetHitbox, new Circle(Projectile.Center, Projectile.width / 2));
         }
 
-        public override void OnHitPlayer(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             target.AddBuff(BuffID.CursedInferno, 60 * 4);
         }
@@ -1402,7 +1402,7 @@ namespace Polarities.NPCs.Esophage
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("{$Mods.Polarities.ProjectileName.CrimagoSlash}");
+            // DisplayName.SetDefault("{$Mods.Polarities.ProjectileName.CrimagoSlash}");
             Main.projFrames[Projectile.type] = 1;
         }
 

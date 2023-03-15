@@ -36,22 +36,22 @@ namespace Polarities.Items.Placeable.Blocks.Fractal
             return true;
         }
 
-        public override bool Drop(int i, int j)
-        {
-            Tile t = Main.tile[i, j];
-            int style = t.TileFrameY / 18;
-            // It can be useful to share a single tile with multiple styles.
-            switch (style)
-            {
-                case 0:
-                    Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 16, 16, ItemType<FractalEnergyTrap>());
-                    break;
-                case 1:
-                    Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 16, 16, ItemType<FractalLaserTrap>());
-                    break;
-            }
-            return base.Drop(i, j);
-        }
+        //public override bool Drop(int i, int j)/* tModPorter Note: Removed. Use CanDrop to decide if an item should drop. Use GetItemDrops to decide which item drops. Item drops based on placeStyle are handled automatically now, so this method might be able to be removed altogether. */
+        //{
+        //    Tile t = Main.tile[i, j];
+        //    int style = t.TileFrameY / 18;
+        //    // It can be useful to share a single tile with multiple styles.
+        //    switch (style)
+        //    {
+        //        case 0:
+        //            Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 16, 16, ItemType<FractalEnergyTrap>());
+        //            break;
+        //        case 1:
+        //            Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 16, 16, ItemType<FractalLaserTrap>());
+        //            break;
+        //    }
+        //    return base.Drop(i, j);
+        //}
         public override void PlaceInWorld(int i, int j, Item item)
         {
             int style = Main.LocalPlayer.HeldItem.placeStyle;

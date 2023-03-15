@@ -16,7 +16,7 @@ namespace Polarities.Items.Armor.LimestoneArmor
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
 
             //registers a body glowmask color
             ArmorMasks.bodyIndexToBodyMaskColor.Add(EquipLoader.GetEquipSlot(Mod, Name, EquipType.Body), this);
@@ -68,7 +68,7 @@ namespace Polarities.Items.Armor.LimestoneArmor
 
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
 
             //registers a head glowmask
             ArmorMasks.legIndexToArmorDraw.TryAdd(EquipLoader.GetEquipSlot(Mod, Name, EquipType.Legs), this);
@@ -139,7 +139,7 @@ namespace Polarities.Items.Armor.LimestoneArmor
 
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
 
             int equipSlotHead = EquipLoader.GetEquipSlot(Mod, Name, EquipType.Head);
             ArmorIDs.Head.Sets.DrawHead[equipSlotHead] = false;

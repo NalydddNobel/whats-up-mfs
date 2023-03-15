@@ -15,7 +15,7 @@ namespace Polarities.Items.Weapons.Melee
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
             PolaritiesItem.IsFlawless.Add(Type);
         }
 
@@ -142,14 +142,12 @@ namespace Polarities.Items.Weapons.Melee
             }
         }
 
-        public override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
-        {
-            damage = (int)(damage * Projectile.scale / 0.75f);
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
+            modifiers.SourceDamage *= Projectile.scale / 0.75f;
         }
 
-        public override void ModifyHitPvp(Player target, ref int damage, ref bool crit)
-        {
-            damage = (int)(damage * Projectile.scale / 0.75f);
+        public override void ModifyHitPlayer(Player target, ref Player.HurtModifiers modifiers) {
+            modifiers.SourceDamage *= Projectile.scale / 0.75f;
         }
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)

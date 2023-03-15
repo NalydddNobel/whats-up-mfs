@@ -2,6 +2,7 @@
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 
@@ -12,7 +13,7 @@ namespace Polarities.Items.Placeable.Furniture.Fractal
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = 1;
+            Item.ResearchUnlockCount = 1;
         }
 
         public override void SetDefaults()
@@ -35,7 +36,7 @@ namespace Polarities.Items.Placeable.Furniture.Fractal
             TileObjectData.newTile.Origin = new Point16(1, 1);
             TileObjectData.newTile.CoordinateHeights = new[] { 16, 16 };
             TileObjectData.addTile(Type);
-            AddMapEntry(new Color(33, 88, 106), CreateMapEntryName("FractalAssembler"));
+            AddMapEntry(new Color(33, 88, 106), Language.GetText("Mods.Polarities.MapObject.FractalAssembler"));
             DustType = 116;
         }
 

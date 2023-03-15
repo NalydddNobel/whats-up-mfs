@@ -45,13 +45,13 @@ namespace Polarities.NPCs.Enemies.Fractal.PostSentinel
             BannerItem = ItemType<FractalPointBanner>();
         }
 
-        public override void ScaleExpertStats(int numPlayers, float bossLifeScale)
+        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)/* tModPorter Note: bossLifeScale -> balance (bossAdjustment is different, see the docs for details) */
         {
             NPC.damage = 250;
             NPC.lifeMax = 400;
         }
 
-        public override void OnHitPlayer(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
         {
             //target.AddBuff(BuffType<FractalSubworldDebuff>(), 60 * 60);
             //target.GetModPlayer<PolaritiesPlayer>().suddenFractalizationChange = true;
@@ -60,7 +60,7 @@ namespace Polarities.NPCs.Enemies.Fractal.PostSentinel
             Explode();
         }
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit)
         {
             //explode
             Explode();

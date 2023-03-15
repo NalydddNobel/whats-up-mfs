@@ -22,7 +22,7 @@ namespace Polarities.Items.Placeable.MusicBoxes
 
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = 1;
+            Item.ResearchUnlockCount = 1;
 
             MusicLoader.AddMusicBox(Mod, MusicLoader.GetMusicSlot(Mod, "Sounds/Music/" + MusicName), Type, TileType<MusicBoxTile>(), Index * 36);
             MusicBoxTile.musicBoxIndexToItemType.Add(Index, Type);

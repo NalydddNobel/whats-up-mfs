@@ -16,7 +16,7 @@ namespace Polarities.Items.Armor.StormcloudArmor
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
         }
 
         public override void SetDefaults()
@@ -48,7 +48,7 @@ namespace Polarities.Items.Armor.StormcloudArmor
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
         }
 
         public override void SetDefaults()
@@ -80,7 +80,7 @@ namespace Polarities.Items.Armor.StormcloudArmor
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
         }
 
         public override void SetDefaults()
@@ -125,7 +125,7 @@ namespace Polarities.Items.Armor.StormcloudArmor
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("{$Mods.Polarities.ProjectileName.StormCloudfishRaincloud}");
+            // DisplayName.SetDefault("{$Mods.Polarities.ProjectileName.StormCloudfishRaincloud}");
 
             Main.projFrames[Projectile.type] = 3;
         }
@@ -176,7 +176,7 @@ namespace Polarities.Items.Armor.StormcloudArmor
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("{$Mods.Polarities.ProjectileName.CloudfishRain}");
+            // DisplayName.SetDefault("{$Mods.Polarities.ProjectileName.CloudfishRain}");
 
             Main.projFrames[Projectile.type] = 1;
             ProjectileID.Sets.MinionShot[Projectile.type] = true;

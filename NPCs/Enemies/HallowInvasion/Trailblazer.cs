@@ -377,7 +377,7 @@ namespace Polarities.NPCs.Enemies.HallowInvasion
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Pixie Aura");
+            // DisplayName.SetDefault("Pixie Aura");
 
             /*Texture2D texture = new Texture2D(Main.spriteBatch.GraphicsDevice, 256, 256, false, SurfaceFormat.Color);
 			System.Collections.Generic.List<Color> list = new System.Collections.Generic.List<Color>();

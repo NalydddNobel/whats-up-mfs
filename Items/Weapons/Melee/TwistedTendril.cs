@@ -12,7 +12,7 @@ namespace Polarities.Items.Weapons.Melee
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (3);
+            Item.ResearchUnlockCount = (3);
         }
 
         public override void SetDefaults()
@@ -61,7 +61,7 @@ namespace Polarities.Items.Weapons.Melee
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("{$Mods.Polarities.ItemName.TwistedTendril}");
+            // DisplayName.SetDefault("{$Mods.Polarities.ItemName.TwistedTendril}");
         }
         public override void SetDefaults()
         {

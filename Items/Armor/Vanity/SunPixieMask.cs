@@ -12,7 +12,7 @@ namespace Polarities.Items.Armor.Vanity
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
 
             int equipSlotHead = EquipLoader.GetEquipSlot(Mod, Name, EquipType.Head);
             ArmorIDs.Head.Sets.DrawHead[equipSlotHead] = false;

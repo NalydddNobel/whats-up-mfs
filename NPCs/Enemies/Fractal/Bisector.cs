@@ -170,7 +170,7 @@ namespace Polarities.NPCs.Enemies.Fractal
             }
         }
 
-        public override void HitEffect(int hitDirection, double damage)
+        public override void HitEffect(NPC.HitInfo hit)
         {
             if (NPC.life <= 0 && Main.netMode != NetmodeID.Server)
             {
@@ -252,7 +252,7 @@ namespace Polarities.NPCs.Enemies.Fractal
             NPC.active = Main.npc[NPC.realLife].active;
         }
 
-        public override void OnHitByProjectile(Projectile projectile, int damage, float knockback, bool crit)
+        public override void OnHitByProjectile(Projectile projectile, NPC.HitInfo hit, int damageDone)
         {
             List<int> hitboxIds = new List<int>();
             for (int i = 0; i < Main.npc.Length; i++)
@@ -287,7 +287,7 @@ namespace Polarities.NPCs.Enemies.Fractal
             }
         }
 
-        public override void OnHitByItem(Player player, Item item, int damage, float knockback, bool crit)
+        public override void OnHitByItem(Player player, Item item, NPC.HitInfo hit, int damageDone)
         {
             List<int> hitboxIds = new List<int>();
             for (int i = 0; i < Main.npc.Length; i++)
@@ -358,7 +358,7 @@ namespace Polarities.NPCs.Enemies.Fractal
             segmentLength = 10;
         }
 
-        public override void HitEffect(int hitDirection, double damage)
+        public override void HitEffect(NPC.HitInfo hit)
         {
             if (NPC.life <= 0 && Main.netMode != NetmodeID.Server)
             {
@@ -420,7 +420,7 @@ namespace Polarities.NPCs.Enemies.Fractal
             segmentLength = 6;
         }
 
-        public override void HitEffect(int hitDirection, double damage)
+        public override void HitEffect(NPC.HitInfo hit)
         {
             if (NPC.life <= 0 && Main.netMode != NetmodeID.Server)
             {
@@ -482,7 +482,7 @@ namespace Polarities.NPCs.Enemies.Fractal
             segmentLength = 6;
         }
 
-        public override void HitEffect(int hitDirection, double damage)
+        public override void HitEffect(NPC.HitInfo hit)
         {
             if (NPC.life <= 0 && Main.netMode != NetmodeID.Server)
             {

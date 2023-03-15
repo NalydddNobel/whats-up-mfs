@@ -265,19 +265,19 @@ namespace Polarities.NPCs.Enemies.HallowInvasion
             }
         }
 
-        public override void ModifyHitByProjectile(Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+        public override void ModifyHitByProjectile(Projectile projectile, ref NPC.HitModifiers modifiers)
         {
             if (NPC.localAI[2] != 0)
             {
-                damage /= 2;
+                modifiers.SourceDamage *= 0.5f;
             }
         }
 
-        public override void ModifyHitByItem(Player player, Item item, ref int damage, ref float knockback, ref bool crit)
+        public override void ModifyHitByItem(Player player, Item item, ref NPC.HitModifiers modifiers)
         {
             if (NPC.localAI[2] != 0)
             {
-                damage /= 2;
+                modifiers.SourceDamage *= 0.5f;
             }
         }
 
@@ -408,7 +408,7 @@ namespace Polarities.NPCs.Enemies.HallowInvasion
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("{$Mods.Polarites.ItemName.Sunblade}");
+            // DisplayName.SetDefault("{$Mods.Polarites.ItemName.Sunblade}");
 
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 15;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;

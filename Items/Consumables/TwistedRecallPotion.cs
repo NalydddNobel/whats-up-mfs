@@ -11,7 +11,7 @@ namespace Polarities.Items.Consumables
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = 20;
+            Item.ResearchUnlockCount = 20;
         }
 
         public override void SetDefaults()

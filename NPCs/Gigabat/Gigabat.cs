@@ -607,11 +607,11 @@ namespace Polarities.NPCs.Gigabat
             return dashing;
         }
 
-        public override bool? CanHitNPC(NPC target)
+        public override bool CanHitNPC(NPC target)
         {
             if (dashing)
             {
-                return null;
+                return true;
             }
             return false;
         }

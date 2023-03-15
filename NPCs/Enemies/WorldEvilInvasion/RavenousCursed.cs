@@ -419,7 +419,7 @@ namespace Polarities.NPCs.Enemies.WorldEvilInvasion
             Main.dust[dust].noGravity = true;
         }
 
-        public override void OnHitPlayer(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             target.AddBuff(BuffID.CursedInferno, 60 * 8);
         }
@@ -450,7 +450,7 @@ namespace Polarities.NPCs.Enemies.WorldEvilInvasion
             Projectile.velocity *= 0.95f;
         }
 
-        public override void OnHitPlayer(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             target.AddBuff(BuffID.CursedInferno, 60 * 8);
         }

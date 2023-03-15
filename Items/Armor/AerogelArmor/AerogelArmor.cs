@@ -17,7 +17,7 @@ namespace Polarities.Items.Armor.AerogelArmor
 
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
 
             int equipSlotBody = EquipLoader.GetEquipSlot(Mod, Name, EquipType.Body);
             ArmorIDs.Body.Sets.NeedsToDrawArm[equipSlotBody] = true;
@@ -57,9 +57,9 @@ namespace Polarities.Items.Armor.AerogelArmor
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Aerogel Hood");
+            // DisplayName.SetDefault("Aerogel Hood");
 
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
         }
 
         public override void SetDefaults()

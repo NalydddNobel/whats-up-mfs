@@ -14,7 +14,7 @@ namespace Polarities.Items.Weapons.Summon.Whips
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
         }
 
         public override void SetDefaults()
@@ -32,7 +32,7 @@ namespace Polarities.Items.Weapons.Summon.Whips
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("{$Mods.Polarities.ItemName.HeadSplitter}");
+            // DisplayName.SetDefault("{$Mods.Polarities.ItemName.HeadSplitter}");
 
             ProjectileID.Sets.IsAWhip[Type] = true;
         }
@@ -56,13 +56,13 @@ namespace Polarities.Items.Weapons.Summon.Whips
             return true;
         }
 
-        public override void ModifyDamageScaling(ref float damageScale)
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
         {
             //damage enemies less after every 3 hits
-            damageScale *= (float)Math.Pow(0.6f, (int)Projectile.ai[1] / 3);
+            modifiers.SourceDamage *= (float)Math.Pow(0.6f, (int)Projectile.ai[1] / 3);
         }
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(ModContent.BuffType<HeadSplitterDebuff>(), 240);
             target.AddBuff(BuffID.Venom, 240);

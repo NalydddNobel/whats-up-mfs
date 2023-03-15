@@ -11,7 +11,7 @@ namespace Polarities.NPCs.Eclipxie
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Solar Corona");
+            // DisplayName.SetDefault("Solar Corona");
             Main.projFrames[Projectile.type] = 1;
         }
 
@@ -47,7 +47,7 @@ namespace Polarities.NPCs.Eclipxie
             if (!pixie.active) { Projectile.Kill(); }
         }
 
-        public override void OnHitPlayer(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             target.AddBuff(BuffID.OnFire, 180, true);
         }

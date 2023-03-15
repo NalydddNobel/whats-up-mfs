@@ -287,7 +287,7 @@ namespace Polarities.NPCs.SelfsimilarSentinel
 
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Selfsimilar Sentinel");
+			// DisplayName.SetDefault("Selfsimilar Sentinel");
 			Main.npcFrameCount[NPC.type] = 5;
 			NPCID.Sets.MustAlwaysDraw[NPC.type] = true;
 		}
@@ -314,9 +314,9 @@ namespace Polarities.NPCs.SelfsimilarSentinel
 			Music = MusicLoader.GetMusicSlot(Mod, "Sounds/Music/SentinelP1");
 		}
 
-        public override void ScaleExpertStats(int numPlayers, float bossLifeScale)
+        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)/* tModPorter Note: bossLifeScale -> balance (bossAdjustment is different, see the docs for details) */
 		{
-			NPC.lifeMax = (int)(64000 * bossLifeScale);
+			NPC.lifeMax = (int)(64000 * balance);
 		}
 
 		public static int secondStageHeadSlot;
@@ -2091,7 +2091,7 @@ namespace Polarities.NPCs.SelfsimilarSentinel
 
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Selfsimilar Sentinel");
+			// DisplayName.SetDefault("Selfsimilar Sentinel");
 		}
 
 		public override void SetDefaults()
@@ -2247,7 +2247,7 @@ namespace Polarities.NPCs.SelfsimilarSentinel
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Hyperbolic Bolt");
+			// DisplayName.SetDefault("Hyperbolic Bolt");
 
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 10;
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
@@ -2523,7 +2523,7 @@ namespace Polarities.NPCs.SelfsimilarSentinel
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Hyperbolic Ray");
+			// DisplayName.SetDefault("Hyperbolic Ray");
 		}
 
 		public override void SetDefaults()
@@ -2829,7 +2829,7 @@ namespace Polarities.NPCs.SelfsimilarSentinel
 	{
         public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Hyperbolic Pulse");
+			// DisplayName.SetDefault("Hyperbolic Pulse");
 
 			/*Texture2D texture = new Texture2D(Main.spriteBatch.GraphicsDevice, 4096, 4096, false, SurfaceFormat.Color);
 			System.Collections.Generic.List<Color> list = new System.Collections.Generic.List<Color>();
@@ -3152,7 +3152,7 @@ namespace Polarities.NPCs.SelfsimilarSentinel
 
         public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Hyperbolic Pulse");
+			// DisplayName.SetDefault("Hyperbolic Pulse");
 		}
 
 		public override void SetDefaults()
@@ -3289,7 +3289,7 @@ namespace Polarities.NPCs.SelfsimilarSentinel
 
         public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Hyperbolic Wisp");
+			// DisplayName.SetDefault("Hyperbolic Wisp");
 
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 10;
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
@@ -3460,7 +3460,7 @@ namespace Polarities.NPCs.SelfsimilarSentinel
 
         public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Selfsimilar Ore Cunk");
+			// DisplayName.SetDefault("Selfsimilar Ore Cunk");
 
 			Main.projFrames[Projectile.type] = 4;
 		}

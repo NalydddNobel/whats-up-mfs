@@ -8,9 +8,7 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="Biomes\NewFolder\**" />
-    <EmbeddedResource Remove="Biomes\NewFolder\**" />
-    <None Remove="Biomes\NewFolder\**" />
+    <AdditionalFiles Include="Localization\en-US-BAD.hhhhh" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
@@ -18,9 +16,6 @@
   <ItemGroup>
     <Reference Include="MultiHitboxNPCLibrary">
       <HintPath>..\..\ModReader\MultiHitboxNPCLibrary\MultiHitboxNPCLibrary.dll</HintPath>
-    </Reference>
-    <Reference Include="SubworldLibrary">
-      <HintPath>..\SubworldLibrary.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

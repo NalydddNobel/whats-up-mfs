@@ -10,7 +10,7 @@ namespace Polarities.Items.Placeable.Blocks.Fractal
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = 100;
+            Item.ResearchUnlockCount = 100;
         }
 
         public override void SetDefaults()
@@ -49,7 +49,7 @@ namespace Polarities.Items.Placeable.Blocks.Fractal
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Fractal Brick Wall");
+            // DisplayName.SetDefault("Fractal Brick Wall");
         }
 
         public override void SetDefaults()

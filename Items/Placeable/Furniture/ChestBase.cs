@@ -17,7 +17,7 @@ namespace Polarities.Items.Placeable.Furniture
 
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
         }
 
         public override void SetDefaults()
@@ -52,22 +52,20 @@ namespace Polarities.Items.Placeable.Furniture
             TileID.Sets.BasicChest[Type] = true;
             TileID.Sets.DisableSmartCursor[Type] = true;
 
-            if (ChestName == null)
-                TileID.Sets.BasicChest[Type] = true;
-            else
-                ContainerName.SetDefault(ChestName);
+            if (ChestName != null) {
+                // TODO: Do chest name stuff?
+            }
 
             DustType = MyDustType;
             AdjTiles = new int[] { TileID.Containers };
-            ChestDrop = DropItem;
+            ItemDrop = DropItem;
 
-            ModTranslation name = CreateMapEntryName();
-            name.SetDefault(ChestName);
+            LocalizedText name = CreateMapEntryName();
+            // name.SetDefault(ChestName);
             AddMapEntry(MapColor, name, MapChestName);
 
-            name = CreateMapEntryName(Name + "_Locked");
-            name.SetDefault("{$Mods.Polarities.MapObject.LockedChest}" + ChestName);
-            AddMapEntry(MapColorLocked, name, MapChestName);
+            // name.SetDefault("{$Mods.Polarities.MapObject.LockedChest}" + ChestName);
+            AddMapEntry(MapColorLocked, Language.GetText($"Mods.Polarities.MapObject.{Name}_Locked"));
 
             // Placement
             TileObjectData.newTile.CopyFrom(TileObjectData.Style2x2);
@@ -133,7 +131,7 @@ namespace Polarities.Items.Placeable.Furniture
 
         public override void KillMultiTile(int i, int j, int frameX, int frameY)
         {
-            Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 32, ChestDrop);
+            Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 32, ItemDrop);
             Chest.DestroyChest(i, j);
         }
 
@@ -200,7 +198,7 @@ namespace Polarities.Items.Placeable.Furniture
                         {
                             if (Main.netMode == NetmodeID.MultiplayerClient)
                             {
-                                NetMessage.SendData(MessageID.Unlock, -1, -1, null, player.whoAmI, 1f, left, top);
+                                NetMessage.SendData(MessageID.LockAndUnlock, -1, -1, null, player.whoAmI, 1f, left, top);
                             }
                         }
                     }

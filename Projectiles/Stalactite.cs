@@ -14,7 +14,7 @@ namespace Polarities.Projectiles
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("{$Mods.Polarities.ProjectileName.SpeleothemStalactite}");
+            // DisplayName.SetDefault("{$Mods.Polarities.ProjectileName.SpeleothemStalactite}");
 
             ProjectileID.Sets.DontAttachHideToAlpha[Projectile.type] = true;
             Main.projFrames[Projectile.type] = 3;
@@ -72,7 +72,7 @@ namespace Polarities.Projectiles
             behindNPCsAndTiles.Add(index);
         }
 
-        public override void OnHitPlayer(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             if (Main.rand.NextBool())
                 target.AddBuff(BuffID.BrokenArmor, 60 * 60);

@@ -9,7 +9,7 @@ namespace Polarities.Items.Placeable.Blocks.Fractal
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = 100;
+            Item.ResearchUnlockCount = 100;
         }
 
         public override void SetDefaults()
@@ -40,7 +40,7 @@ namespace Polarities.Items.Placeable.Blocks.Fractal
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = 400;
+            Item.ResearchUnlockCount = 400;
         }
 
         public override void SetDefaults()

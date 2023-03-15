@@ -14,7 +14,7 @@ namespace Polarities.Items.Weapons.Magic
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
 
             Item.staff[Item.type] = true;
         }
@@ -147,12 +147,12 @@ namespace Polarities.Items.Weapons.Magic
             }
         }
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(BuffType<Buffs.Desiccating>(), 60);
         }
 
-        public override void OnHitPvp(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             target.AddBuff(BuffType<Buffs.Desiccating>(), 60);
         }

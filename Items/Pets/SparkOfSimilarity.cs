@@ -10,7 +10,7 @@ namespace Polarities.Items.Pets
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = 1;
+            Item.ResearchUnlockCount = 1;
         }
 
         public override void SetDefaults()
@@ -61,7 +61,7 @@ namespace Polarities.Items.Pets
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Baby Spark Crawler");
+            // DisplayName.SetDefault("Baby Spark Crawler");
             Main.projFrames[Type] = 1;
             Main.projPet[Type] = true;
         }

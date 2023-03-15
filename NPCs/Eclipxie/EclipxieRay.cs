@@ -14,7 +14,7 @@ namespace Polarities.NPCs.Eclipxie
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Solar Ray");
+            // DisplayName.SetDefault("Solar Ray");
         }
 
         public override void SetDefaults()
@@ -45,7 +45,7 @@ namespace Polarities.NPCs.Eclipxie
             Projectile.rotation = Projectile.velocity.ToRotation();
         }
 
-        public override void OnHitPlayer(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             target.AddBuff(BuffID.OnFire, 180, true);
         }

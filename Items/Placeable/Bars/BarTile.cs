@@ -30,17 +30,17 @@ namespace Polarities.Items.Placeable.Bars
             AddMapEntry(new Color(224, 194, 101), Language.GetText("MapObject.MetalBar"));
         }
 
-        public override bool Drop(int i, int j)
-        {
-            Tile t = Main.tile[i, j];
-            int style = t.TileFrameX / 18;
-            int itemType = BarBase.barIndexToItemType[style];
-            if (itemType != 0)
-            {
-                Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 16, 16, itemType);
-            }
-            return base.Drop(i, j);
-        }
+        //public override bool Drop(int i, int j)/* tModPorter Note: Removed. Use CanDrop to decide if an item should drop. Use GetItemDrops to decide which item drops. Item drops based on placeStyle are handled automatically now, so this method might be able to be removed altogether. */
+        //{
+        //    Tile t = Main.tile[i, j];
+        //    int style = t.TileFrameX / 18;
+        //    int itemType = BarBase.barIndexToItemType[style];
+        //    if (itemType != 0)
+        //    {
+        //        Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 16, 16, itemType);
+        //    }
+        //    return base.Drop(i, j);
+        //}
 
         public override bool CreateDust(int i, int j, ref int type)
         {
@@ -70,7 +70,7 @@ namespace Polarities.Items.Placeable.Bars
             barIndexToItemType.Add(BarIndex, Type);
             barIndexToDustIndex.Add(BarIndex, DustIndex);
 
-            SacrificeTotal = 25;
+            Item.ResearchUnlockCount = 25;
         }
 
         public override void SetDefaults()
@@ -172,6 +172,24 @@ namespace Polarities.Items.Placeable.Bars
                 .AddIngredient(ItemType<SelfsimilarOre>(), 4)
                 .AddTile(TileID.AdamantiteForge)
                 .Register();
+        }
+    }
+
+    public class PolarizedBar : BarBase {
+        public override int BarIndex => 0;
+        public override int? DustIndex => DustType<MantellarDust>();
+
+        public override void SetStaticDefaults() {
+            // DisplayName.SetDefault("Polarized Bar");
+            // Tooltip.SetDefault("'Emits a deep magnetic hum'");
+        }
+
+        public override void SetDefaults() {
+            base.SetDefaults();
+            Item.width = 30;
+            Item.height = 24;
+            Item.value = Item.sellPrice(gold: 1);
+            Item.rare = ItemRarityID.Red;
         }
     }
 }

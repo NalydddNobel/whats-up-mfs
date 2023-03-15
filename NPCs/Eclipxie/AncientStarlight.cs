@@ -15,7 +15,7 @@ namespace Polarities.NPCs.Eclipxie
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Ancient Starlight");
+            // DisplayName.SetDefault("Ancient Starlight");
         }
 
         public override void SetDefaults()

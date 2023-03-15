@@ -14,9 +14,9 @@ namespace Polarities.Items.Weapons.Ranged.Ammo
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("Sticks to enemies");
+            // Tooltip.SetDefault("Sticks to enemies");
 
-            SacrificeTotal = (99);
+            Item.ResearchUnlockCount = (99);
         }
 
         public override void SetDefaults()
@@ -53,7 +53,7 @@ namespace Polarities.Items.Weapons.Ranged.Ammo
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("{$Mods.Polarities.ItemName.ChlorophyteDart}");
+            // DisplayName.SetDefault("{$Mods.Polarities.ItemName.ChlorophyteDart}");
         }
 
         public override void SetDefaults()
@@ -112,7 +112,7 @@ namespace Polarities.Items.Weapons.Ranged.Ammo
         private const int MAX_STICKY_JAVELINS = 32;
         private readonly Point[] _stickingJavelins = new Point[MAX_STICKY_JAVELINS];
 
-        public override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
         {
             IsStickingToTarget = true;
             TargetWhoAmI = target.whoAmI;
@@ -125,7 +125,7 @@ namespace Polarities.Items.Weapons.Ranged.Ammo
             UpdateStickyJavelins(target);
         }
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[Projectile.owner] = 0;
         }

@@ -47,16 +47,19 @@ namespace Polarities
         public override void Load()
         {
             //allow crits from enemies
-            IL.Terraria.Player.Update_NPCCollision += Player_Update_NPCCollision;
+            Terraria.IL_Player.Update_NPCCollision += Player_Update_NPCCollision;
             //modify color of damage text for crits from enemies
-            IL.Terraria.Player.Hurt += Player_Hurt;
+            // TODO: Make load when it works again
+            //Terraria.IL_Player.Hurt += Player_Hurt;
             //modify damage numbers for negative life regen effects
-            IL.Terraria.Player.UpdateLifeRegen += Player_UpdateLifeRegen;
+            Terraria.IL_Player.UpdateLifeRegen += Player_UpdateLifeRegen;
             //dev armor
-            On.Terraria.Player.TryGettingDevArmor += Player_TryGettingDevArmor;
+            Terraria.On_Player.TryGettingDevArmor += Player_TryGettingDevArmor;
             //customskies
-            IL.Terraria.Player.UpdateBiomes += Player_UpdateBiomes;
+            Terraria.IL_Player.UpdateBiomes += Player_UpdateBiomes;
         }
+
+        public float ammoChance;
 
         public int warhammerDefenseBoost = 0;
         public int warhammerTimeBoost = 0;
@@ -91,7 +94,7 @@ namespace Polarities
         public int moonLordLifestealCooldown;
         public int wingTimeBoost;
         public float critDamageBoostMultiplier;
-        public int ignoreCritDefenseAmount;
+        public int criticalStrikeFlatDamage;
         public bool snakescaleSetBonus;
         public int desiccation;
         public int incineration;
@@ -169,6 +172,8 @@ namespace Polarities
 
         public override void ResetEffects()
         {
+            ResetEffects_HighTechArmor();
+            ammoChance = 1f;
             if (selfsimilarHitTimer > 0)
             {
                 selfsimilarHitTimer--;
@@ -206,7 +211,7 @@ namespace Polarities
             skeletronBook = false;
             wingTimeBoost = 0;
             critDamageBoostMultiplier = 1f;
-            ignoreCritDefenseAmount = 0;
+            criticalStrikeFlatDamage = 0;
             snakescaleSetBonus = false;
             desiccation = 0;
             incineration = 0;
@@ -699,7 +704,7 @@ namespace Polarities
 
             if (limestoneSetBonusHitCooldown > 0)
             {
-                Player.statDefense = 0;
+                Player.statDefense -= Player.statDefense;
             }
 
             //update bubby vanity wing frames
@@ -875,20 +880,37 @@ namespace Polarities
             }
         }
 
-        public override bool? CanHitNPC(Item item, NPC target)
+        public override bool? CanHitNPCWithItem(Item item, NPC target)
         {
             if (target.GetGlobalNPC<PolaritiesNPC>().usesProjectileHitCooldowns && itemHitCooldown > 0)
             {
                 return false;
             }
 
-            return base.CanHitNPC(item, target);
+            return base.CanHitNPCWithItem(item, target);
         }
 
-        public override void OnHitNPC(Item item, NPC target, int damage, float knockback, bool crit)
-        {
-            OnHitNPCWithAnything(target, damage, knockback, crit, item.DamageType);
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+            if (snakescaleSetBonus && hit.Crit) {
+                target.AddBuff(BuffID.Venom, 5 * 60);
+            }
 
+            if (moonLordLifestealCooldown == 0 && Player.HasBuff(BuffType<MoonLordBookBuff>()) && !Player.moonLeech) {
+                float baseLifestealAmount = (float)Math.Log(hit.Damage * Math.Pow(Main.rand.NextFloat(1f), 4));
+                if (baseLifestealAmount >= 1) {
+                    moonLordLifestealCooldown = 10;
+                    Player.statLife += (int)baseLifestealAmount;
+                    Player.HealEffect((int)baseLifestealAmount);
+                }
+            }
+
+            if (hit.DamageType != DamageClass.Magic && !hit.DamageType.GetEffectInheritance(DamageClass.Magic) && solarEnergizer) {
+                Player.statMana++;
+            }
+        }
+
+        public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
+        {
             if (target.GetGlobalNPC<PolaritiesNPC>().usesProjectileHitCooldowns)
             {
                 itemHitCooldown = target.GetGlobalNPC<PolaritiesNPC>().projectileHitCooldownTime;
@@ -900,10 +922,8 @@ namespace Polarities
             }
         }
 
-        public override void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            OnHitNPCWithAnything(target, damage, knockback, crit, proj.DamageType);
-
             if (proj.IsTypeSummon())
             {
                 royalOrbHitCount++;
@@ -916,31 +936,7 @@ namespace Polarities
             }
         }
 
-        public void OnHitNPCWithAnything(NPC target, int damage, float knockback, bool crit, DamageClass damageClass)
-        {
-            if (snakescaleSetBonus && crit)
-            {
-                target.AddBuff(BuffID.Venom, 5 * 60);
-            }
-
-            if (moonLordLifestealCooldown == 0 && Player.HasBuff(BuffType<MoonLordBookBuff>()) && !Player.moonLeech)
-            {
-                float baseLifestealAmount = (float)Math.Log(damage * Math.Pow(Main.rand.NextFloat(1f), 4));
-                if (baseLifestealAmount >= 1)
-                {
-                    moonLordLifestealCooldown = 10;
-                    Player.statLife += (int)baseLifestealAmount;
-                    Player.HealEffect((int)baseLifestealAmount);
-                }
-            }
-
-            if (damageClass != DamageClass.Magic && !damageClass.GetEffectInheritance(DamageClass.Magic) && solarEnergizer)
-            {
-                Player.statMana++;
-            }
-        }
-
-        public override void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter)
+        public override void OnHurt(Player.HurtInfo info)
         {
             //TODO: (MAYBE) Replace with source propagation system once supported/if it doesn't end up being trivially supported, also move terraprisma to be obtained on any flawless run if/when this system is added
             for (int i = 0; i < Main.maxNPCs; i++)
@@ -1111,56 +1107,27 @@ namespace Polarities
             return Player.dashType == 0 && !Player.setSolar && !Player.mount.Active;
         }
 
-        public override void ModifyHitNPC(Item item, NPC target, ref int damage, ref float knockback, ref bool crit)
-        {
-            ModifyHitNPCWithAnything(target, item.DamageType, ref damage, ref knockback, ref crit);
-        }
-
-        public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
-        {
-            ModifyHitNPCWithAnything(target, proj.DamageType, ref damage, ref knockback, ref crit);
-        }
-
-        public void ModifyHitNPCWithAnything(NPC target, DamageClass damageType, ref int damage, ref float knockback, ref bool crit)
-        {
-            if (damageType != DamageClass.Magic && damageType.GetModifierInheritance(DamageClass.Magic).damageInheritance == 0f && damageType.GetModifierInheritance(DamageClass.Generic).Equals(StatInheritanceData.Full))
-            {
-                damage = (int)(damage * nonMagicDamage.Additive * nonMagicDamage.Multiplicative);
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
+            if (modifiers.DamageType != DamageClass.Magic && modifiers.DamageType.GetModifierInheritance(DamageClass.Magic).damageInheritance == 0f && modifiers.DamageType.GetModifierInheritance(DamageClass.Generic).Equals(StatInheritanceData.Full)) {
+                modifiers.SourceDamage *= nonMagicDamage.Additive * nonMagicDamage.Multiplicative;
             }
 
-            if (target.HasBuff(BuffType<Pinpointed>()) && Main.rand.NextBool()) crit = true;
+            if (target.HasBuff(BuffType<Pinpointed>()) && Main.rand.NextBool()) {
+                modifiers.SetCrit();
+            }
 
             target.GetGlobalNPC<PolaritiesNPC>().ignoredDefenseFromCritAmount = 0;
-            if (crit)
+
+            modifiers.CritDamage *= critDamageBoostMultiplier;
+            target.GetGlobalNPC<PolaritiesNPC>().ignoredDefenseFromCritAmount = criticalStrikeFlatDamage;
+        }
+
+        public override void ModifyHurt(ref Player.HurtModifiers modifiers)
+        {
+            if (!modifiers.PvP)
             {
-                damage = Math.Max(damage, (int)(damage * critDamageBoostMultiplier));
-                target.GetGlobalNPC<PolaritiesNPC>().ignoredDefenseFromCritAmount = ignoreCritDefenseAmount;
+                modifiers.FinalDamage *= 2;
             }
-        }
-
-        public override void ModifyHitByNPC(NPC npc, ref int damage, ref bool crit)
-        {
-            ModifyHitByAnything(ref damage, ref crit);
-        }
-
-        public override void ModifyHitByProjectile(Projectile projectile, ref int damage, ref bool crit)
-        {
-            ModifyHitByAnything(ref damage, ref crit);
-        }
-
-        public void ModifyHitByAnything(ref int damage, ref bool crit)
-        {
-            if (Player.HasBuff(BuffType<Pinpointed>()) && Main.rand.NextBool()) crit = true;
-        }
-
-        public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter)
-        {
-            if (crit && !pvp)
-            {
-                damage = (int)Main.CalculateDamagePlayersTake(damage, Player.statDefense) * 2;
-                customDamage = true;
-            }
-            return true;
         }
 
         public int GetFractalization()
@@ -1387,7 +1354,7 @@ namespace Polarities
         }
 
         //modded dev items
-        private void Player_TryGettingDevArmor(On.Terraria.Player.orig_TryGettingDevArmor orig, Player self, IEntitySource source)
+        private void Player_TryGettingDevArmor(Terraria.On_Player.orig_TryGettingDevArmor orig, Player self, IEntitySource source)
         {
             orig(self, source);
 

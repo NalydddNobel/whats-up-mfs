@@ -15,7 +15,7 @@ namespace Polarities.Items.Weapons.Melee
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
             Main.RegisterItemAnimation(Type, new DrawAnimationVertical(5, 8));
             PolaritiesItem.IsFlawless.Add(Type);
         }
@@ -344,7 +344,7 @@ namespace Polarities.Items.Weapons.Melee
             if (parent != -1) Projectile.localAI[1] = Main.rand.NextFloat(60f);
         }
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             if (numChildren < 3 && Main.player[Projectile.owner].ownedProjectileCounts[Projectile.type] < 13)
             {

@@ -12,7 +12,7 @@ namespace Polarities.Items.Weapons.Summon.Minions
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = 1;
+            Item.ResearchUnlockCount = 1;
             PolaritiesItem.IsFractalWeapon.Add(Type);
         }
 
@@ -75,7 +75,7 @@ namespace Polarities.Items.Weapons.Summon.Minions
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Barnsley Fern");
+            // DisplayName.SetDefault("Barnsley Fern");
             Main.projFrames[Type] = 6;
             Main.projPet[Type] = true;
             ProjectileID.Sets.MinionSacrificable[Type] = true;
@@ -256,7 +256,7 @@ namespace Polarities.Items.Weapons.Summon.Minions
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Fractal Frond");
+            // DisplayName.SetDefault("Fractal Frond");
             ProjectileID.Sets.MinionShot[Type] = true;
         }
 

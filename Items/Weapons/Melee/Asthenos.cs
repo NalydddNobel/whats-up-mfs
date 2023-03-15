@@ -19,7 +19,7 @@ namespace Polarities.Items.Weapons.Melee
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
         }
 
         public override void SetDefaults()
@@ -64,7 +64,7 @@ namespace Polarities.Items.Weapons.Melee
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("{$Mods.Polarities.ItemName.Asthenos}");
+            // DisplayName.SetDefault("{$Mods.Polarities.ItemName.Asthenos}");
 
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 10;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
@@ -177,19 +177,19 @@ namespace Polarities.Items.Weapons.Melee
             return CustomCollision.CheckAABBvTriangle(targetHitbox, Projectile.Center, Projectile.Center + new Vector2(0, -12.8f).RotatedBy(Projectile.rotation) * lengthScale, Projectile.Center + new Vector2(0, -12.8f).RotatedBy(Projectile.oldRot[1]) * lengthScale);
         }
 
-        public override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
         {
-            damage = (int)(damage * Projectile.ai[0] / MAX_CHARGE);
-            hitDirection = Main.player[Projectile.owner].direction;
+            modifiers.SourceDamage *= Projectile.ai[0] / MAX_CHARGE;
+            modifiers.HitDirectionOverride = Main.player[Projectile.owner].direction;
 
             Player player = Main.player[Projectile.owner];
             if (!player.channel)
             {
-                damage = (int)(damage * Projectile.ai[0] / 10);
+                modifiers.SourceDamage *= Projectile.ai[0] / 10;
             }
         }
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             Player player = Main.player[Projectile.owner];
             if (!player.channel)

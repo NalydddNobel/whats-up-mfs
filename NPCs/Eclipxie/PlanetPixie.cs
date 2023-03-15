@@ -14,7 +14,7 @@ namespace Polarities.NPCs.Eclipxie
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Planet Pixie");
+            // DisplayName.SetDefault("Planet Pixie");
             Main.npcFrameCount[NPC.type] = 4;
         }
 
@@ -40,7 +40,7 @@ namespace Polarities.NPCs.Eclipxie
             NPC.buffImmune[BuffID.Frostburn] = true;
         }
 
-        public override void ScaleExpertStats(int numPlayers, float bossLifeScale)
+        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)/* tModPorter Note: bossLifeScale -> balance (bossAdjustment is different, see the docs for details) */
         {
             NPC.damage = 60;
             NPC.lifeMax = 2000;
@@ -132,7 +132,7 @@ namespace Polarities.NPCs.Eclipxie
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Planet Ray");
+            // DisplayName.SetDefault("Planet Ray");
         }
 
         public override void SetDefaults()
@@ -173,7 +173,7 @@ namespace Polarities.NPCs.Eclipxie
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Planet Scythe");
+            // DisplayName.SetDefault("Planet Scythe");
         }
 
         public override void SetDefaults()
@@ -218,7 +218,7 @@ namespace Polarities.NPCs.Eclipxie
             SoundEngine.PlaySound(SoundID.Item10, Projectile.position);
             return true;
         }
-        public override void OnHitPlayer(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             SoundEngine.PlaySound(SoundID.Item10, Projectile.position);
         }

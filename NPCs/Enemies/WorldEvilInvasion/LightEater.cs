@@ -300,7 +300,7 @@ namespace Polarities.NPCs.Enemies.WorldEvilInvasion
             }
         }
 
-        public override void OnHitPlayer(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
         {
             target.AddBuff(BuffID.Blackout, 60 * Main.rand.Next(2, 7));
         }

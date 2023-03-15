@@ -63,10 +63,10 @@ namespace Polarities
             ModUtils.Load();
 
             //for handling custom NPC rarities
-            On.Terraria.ID.ContentSamples.FillNpcRarities += ContentSamples_FillNpcRarities;
+            Terraria.ID.On_ContentSamples.FillNpcRarities += ContentSamples_FillNpcRarities;
 
             //music edit
-            On.Terraria.Main.UpdateAudio_DecideOnNewMusic += Main_UpdateAudio_DecideOnNewMusic;
+            Terraria.On_Main.UpdateAudio_DecideOnNewMusic += Main_UpdateAudio_DecideOnNewMusic;
 
             IL_ResizeArrays += Polarities_IL_ResizeArrays;
 
@@ -103,7 +103,7 @@ namespace Polarities
             preGeneratedRand = null;
 
             //reset to vanilla size
-            Array.Resize<Asset<Texture2D>>(ref TextureAssets.GlowMask, Main.maxGlowMasks);
+            Array.Resize<Asset<Texture2D>>(ref TextureAssets.GlowMask, GlowMaskID.Count);
 
             IL_ResizeArrays -= Polarities_IL_ResizeArrays;
 
@@ -244,7 +244,7 @@ namespace Polarities
             }
         }
 
-        private void ContentSamples_FillNpcRarities(On.Terraria.ID.ContentSamples.orig_FillNpcRarities orig)
+        private void ContentSamples_FillNpcRarities(Terraria.ID.On_ContentSamples.orig_FillNpcRarities orig)
         {
             orig();
             foreach (int type in customNPCBestiaryStars.Keys)
@@ -253,7 +253,7 @@ namespace Polarities
             }
         }
 
-        private void Main_UpdateAudio_DecideOnNewMusic(On.Terraria.Main.orig_UpdateAudio_DecideOnNewMusic orig, Main self)
+        private void Main_UpdateAudio_DecideOnNewMusic(Terraria.On_Main.orig_UpdateAudio_DecideOnNewMusic orig, Main self)
         {
             orig(self);
 

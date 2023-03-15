@@ -14,7 +14,7 @@ namespace Polarities.Items.Weapons.Magic
         {
             Item.staff[Item.type] = true;
 
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
         }
 
         public override void SetDefaults()
@@ -83,7 +83,7 @@ namespace Polarities.Items.Weapons.Magic
             }
         }
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.buffImmune[BuffType<Pinpointed>()] = false;
             target.AddBuff(BuffType<Pinpointed>(), 300, true);

@@ -2,6 +2,7 @@
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.Enums;
+using Terraria.GameContent;
 using Terraria.GameContent.ObjectInteractions;
 using Terraria.ID;
 using Terraria.Localization;
@@ -16,7 +17,7 @@ namespace Polarities.Items.Placeable.Furniture
 
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
         }
 
         public override void SetDefaults()
@@ -41,7 +42,7 @@ namespace Polarities.Items.Placeable.Furniture
             {
                 StaticLoaded = true;
 
-                On.Terraria.GameContent.PlayerSittingHelper.GetSittingTargetInfo += PlayerSittingHelper_GetSittingTargetInfo;
+                Terraria.GameContent.On_PlayerSittingHelper.GetSittingTargetInfo += PlayerSittingHelper_GetSittingTargetInfo;
             }
         }
 
@@ -50,8 +51,9 @@ namespace Polarities.Items.Placeable.Furniture
             IsChairTileBase = null;
         }
 
-        private bool PlayerSittingHelper_GetSittingTargetInfo(On.Terraria.GameContent.PlayerSittingHelper.orig_GetSittingTargetInfo orig, Player player, int x, int y, out int targetDirection, out Vector2 playerSittingPosition, out Vector2 seatDownOffset)
+        private bool PlayerSittingHelper_GetSittingTargetInfo(Terraria.GameContent.On_PlayerSittingHelper.orig_GetSittingTargetInfo orig, Player player, int x, int y, out int targetDirection, out Vector2 playerSittingPosition, out Vector2 seatDownOffset, out ExtraSeatInfo extraInfo)
         {
+            extraInfo = default;
             Tile tileSafely = Framing.GetTileSafely(x, y);
             if (IsChairTileBase[tileSafely.TileType])
             {
@@ -137,7 +139,7 @@ namespace Polarities.Items.Placeable.Furniture
             }
             else
             {
-                return orig(player, x, y, out targetDirection, out playerSittingPosition, out seatDownOffset);
+                return orig(player, x, y, out targetDirection, out playerSittingPosition, out seatDownOffset, out extraInfo);
             }
         }
 

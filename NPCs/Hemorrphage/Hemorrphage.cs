@@ -46,7 +46,7 @@ namespace Polarities.NPCs.Hemorrphage
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Hemorrphage");
+            // DisplayName.SetDefault("Hemorrphage");
             Main.npcFrameCount[NPC.type] = 1;
         }
 
@@ -75,9 +75,9 @@ namespace Polarities.NPCs.Hemorrphage
             Music = MusicLoader.GetMusicSlot("Sounds/Music/Hemorrphage");
         }
 
-        public override void ScaleExpertStats(int numPlayers, float bossLifeScale)
+        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)/* tModPorter Note: bossLifeScale -> balance (bossAdjustment is different, see the docs for details) */
         {
-            NPC.lifeMax = (int)(100000 * bossLifeScale);
+            NPC.lifeMax = (int)(100000 * balance);
         }
 
         public override void AI()
@@ -849,7 +849,7 @@ namespace Polarities.NPCs.Hemorrphage
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Hemorrphage Claw");
+            // DisplayName.SetDefault("Hemorrphage Claw");
         }
 
         private int jumpCooldown;
@@ -1068,7 +1068,7 @@ namespace Polarities.NPCs.Hemorrphage
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Hemorrphage Tentacle");
+            // DisplayName.SetDefault("Hemorrphage Tentacle");
         }
 
         public override void SetDefaults()
@@ -1268,7 +1268,7 @@ namespace Polarities.NPCs.Hemorrphage
         public override string Texture => "Polarities/NPCs/Hemorrphage/BloodSpray";
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Blood Spray");
+            // DisplayName.SetDefault("Blood Spray");
 
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 48;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
@@ -1319,7 +1319,7 @@ namespace Polarities.NPCs.Hemorrphage
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
         }
 
-        public override void OnHitPlayer(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             target.AddBuff(BuffID.Slow, 60 * 5);
         }
@@ -1351,7 +1351,7 @@ namespace Polarities.NPCs.Hemorrphage
         public override string Texture => "Polarities/NPCs/Hemorrphage/BloodSpray";
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Blood Spray");
+            // DisplayName.SetDefault("Blood Spray");
 
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 48;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
@@ -1398,7 +1398,7 @@ namespace Polarities.NPCs.Hemorrphage
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
         }
 
-        public override void OnHitPlayer(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             target.AddBuff(BuffID.Slow, 60 * 5);
         }
@@ -1429,7 +1429,7 @@ namespace Polarities.NPCs.Hemorrphage
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Bloodsaw");
+            // DisplayName.SetDefault("Bloodsaw");
         }
 
         public override void SetDefaults()
@@ -1474,7 +1474,7 @@ namespace Polarities.NPCs.Hemorrphage
             Projectile.rotation += 0.25f;
         }
 
-        public override void OnHitPlayer(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             target.AddBuff(BuffID.Slow, 60 * 5);
         }
@@ -1500,7 +1500,7 @@ namespace Polarities.NPCs.Hemorrphage
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Platelet");
+            // DisplayName.SetDefault("Platelet");
         }
 
         public override void SetDefaults()

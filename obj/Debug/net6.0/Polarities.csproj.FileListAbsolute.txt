@@ -5,7 +5,6 @@ C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\ob
 C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\obj\Debug\net6.0\Polarities.csproj.CoreCompileInputs.cache
 C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bin\Debug\net6.0\Polarities.deps.json
 C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bin\Debug\net6.0\Polarities.dll
-C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bin\Debug\net6.0\ref\Polarities.dll
 C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bin\Debug\net6.0\Polarities.pdb
 C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bin\Debug\net6.0\Basic.Reference.Assemblies.Net60.dll
 C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bin\Debug\net6.0\CsvHelper.dll
@@ -27,6 +26,9 @@ C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bi
 C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bin\Debug\net6.0\Mono.Cecil.Mdb.dll
 C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bin\Debug\net6.0\Mono.Cecil.Pdb.dll
 C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bin\Debug\net6.0\Mono.Cecil.Rocks.dll
+C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bin\Debug\net6.0\MonoMod.Backports.dll
+C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bin\Debug\net6.0\MonoMod.Core.dll
+C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bin\Debug\net6.0\MonoMod.ILHelpers.dll
 C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bin\Debug\net6.0\MonoMod.RuntimeDetour.dll
 C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bin\Debug\net6.0\MonoMod.Utils.dll
 C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bin\Debug\net6.0\MP3Sharp.dll
@@ -37,7 +39,6 @@ C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bi
 C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bin\Debug\net6.0\ReLogic.dll
 C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bin\Debug\net6.0\Steamworks.NET.dll
 C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bin\Debug\net6.0\SteelSeriesEngineWrapper.dll
-C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bin\Debug\net6.0\SubworldLibrary.dll
 C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bin\Debug\net6.0\System.CodeDom.dll
 C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bin\Debug\net6.0\System.Composition.AttributedModel.dll
 C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bin\Debug\net6.0\System.Composition.Convention.dll
@@ -77,8 +78,11 @@ C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bi
 C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bin\Debug\net6.0\Mono.Cecil.Mdb.pdb
 C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bin\Debug\net6.0\Mono.Cecil.Pdb.pdb
 C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bin\Debug\net6.0\Mono.Cecil.Rocks.pdb
-C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bin\Debug\net6.0\MonoMod.RuntimeDetour.xml
-C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bin\Debug\net6.0\MonoMod.Utils.xml
+C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bin\Debug\net6.0\MonoMod.Backports.pdb
+C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bin\Debug\net6.0\MonoMod.Core.pdb
+C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bin\Debug\net6.0\MonoMod.ILHelpers.pdb
+C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bin\Debug\net6.0\MonoMod.RuntimeDetour.pdb
+C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bin\Debug\net6.0\MonoMod.Utils.pdb
 C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bin\Debug\net6.0\ReLogic.pdb
 C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bin\Debug\net6.0\ReLogic.xml
 C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bin\Debug\net6.0\System.CodeDom.xml
@@ -166,5 +170,6 @@ C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bi
 C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\bin\Debug\net6.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
 C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\obj\Debug\net6.0\Polarities.csproj.CopyComplete
 C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\obj\Debug\net6.0\Polarities.dll
-C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\obj\Debug\net6.0\ref\Polarities.dll
+C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\obj\Debug\net6.0\refint\Polarities.dll
 C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\obj\Debug\net6.0\Polarities.pdb
+C:\Users\nalyddd\Documents\My Games\Terraria\tModLoader\ModSources\Polarities\obj\Debug\net6.0\ref\Polarities.dll

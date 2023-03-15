@@ -15,7 +15,7 @@ namespace Polarities.Items.Weapons.Summon.Minions
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
 
             Item.staff[Type] = true;
             PolaritiesItem.IsFlawless.Add(Type);
@@ -172,12 +172,12 @@ namespace Polarities.Items.Weapons.Summon.Minions
             }
         }
 
-        public override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
         {
-            damage += Math.Min(Math.Max(0, target.defense - (int)Main.player[Projectile.owner].GetArmorPenetration(DamageClass.Generic)), 15) / 2;
+            modifiers.SourceDamage += Math.Min(Math.Max(0, target.defense - (int)Main.player[Projectile.owner].GetArmorPenetration(DamageClass.Generic)), 15) / 2;
         }
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             SoundEngine.PlaySound(new SoundStyle("Terraria/Sounds/NPC_Killed_4")
             {

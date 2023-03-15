@@ -1187,9 +1187,9 @@ namespace Polarities.NPCs.Eclipxie.EclipxieRework
             }
         }
 
-        public override bool? CanHitNPC(NPC target)
+        public override bool CanHitNPC(NPC target)
         {
-            return splitIntoMinions ? false : null;
+            return !splitIntoMinions;
         }
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {

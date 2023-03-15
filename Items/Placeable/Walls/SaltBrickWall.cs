@@ -10,12 +10,12 @@ namespace Polarities.Items.Placeable.Walls
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (400);
+            Item.ResearchUnlockCount = (400);
         }
 
         public override void SetDefaults()
         {
-            Item.DefaultToPlacableWall((ushort)WallType<SaltBrickWallPlaced>());
+            Item.DefaultToPlaceableWall((ushort)WallType<SaltBrickWallPlaced>());
         }
 
         public override void AddRecipes()

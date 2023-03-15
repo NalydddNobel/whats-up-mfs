@@ -10,7 +10,7 @@ namespace Polarities.Items.Weapons.Melee
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
         }
 
         public override void SetDefaults()
@@ -56,7 +56,7 @@ namespace Polarities.Items.Weapons.Melee
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("{$Mods.Polarities.ItemName.Preserver}");
+            // DisplayName.SetDefault("{$Mods.Polarities.ItemName.Preserver}");
         }
 
         public override void SetDefaults()
@@ -135,13 +135,13 @@ namespace Polarities.Items.Weapons.Melee
             }
         }
 
-        public override void OnHitNPC(NPC target, int damage, float knockBack, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(BuffType<Buffs.Desiccating>(), 60);
             target.AddBuff(BuffType<Buffs.ToxicShock>(), 15);
         }
 
-        public override void OnHitPvp(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             target.AddBuff(BuffType<Buffs.Desiccating>(), 60);
         }

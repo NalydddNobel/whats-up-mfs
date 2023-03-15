@@ -47,13 +47,13 @@ namespace Polarities.NPCs.Enemies.Fractal
             this.SetModBiome<FractalBiome, FractalWastesBiome>();
         }
 
-        public override void ScaleExpertStats(int numPlayers, float bossLifeScale)
+        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)/* tModPorter Note: bossLifeScale -> balance (bossAdjustment is different, see the docs for details) */
         {
             NPC.damage = 100;
             NPC.lifeMax = 200;
         }
 
-        public override void HitEffect(int hitDirection, double damage)
+        public override void HitEffect(NPC.HitInfo hit)
         {
             if (NPC.life <= 0 && Main.netMode != NetmodeID.Server)
             {
@@ -125,7 +125,7 @@ namespace Polarities.NPCs.Enemies.Fractal
             }
         }
 
-        public override void OnHitByItem(Player player, Item item, int damage, float knockback, bool crit)
+        public override void OnHitByItem(Player player, Item item, NPC.HitInfo hit, int damageDone)
         {
             //teleport
             SpawnTeleportDusts();
@@ -135,7 +135,7 @@ namespace Polarities.NPCs.Enemies.Fractal
             attackCooldown = 60 - 9;
         }
 
-        public override void OnHitByProjectile(Projectile projectile, int damage, float knockback, bool crit)
+        public override void OnHitByProjectile(Projectile projectile, NPC.HitInfo hit, int damageDone)
         {
             //teleport
             SpawnTeleportDusts();
@@ -251,7 +251,7 @@ namespace Polarities.NPCs.Enemies.Fractal
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FractalResidue>(), chanceDenominator: 2));
         }
 
-        public override void OnHitPlayer(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
         {
             target.AddBuff(BuffID.Electrified, 240);
         }

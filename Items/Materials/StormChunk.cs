@@ -9,7 +9,7 @@ namespace Polarities.Items.Materials
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (25);
+            Item.ResearchUnlockCount = (25);
             Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(5, 8));
         }
 

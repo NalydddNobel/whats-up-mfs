@@ -12,7 +12,7 @@ namespace Polarities.NPCs.Eclipxie
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Solar Scythe");
+            // DisplayName.SetDefault("Solar Scythe");
             Main.projFrames[Projectile.type] = 4;
         }
 
@@ -52,7 +52,7 @@ namespace Polarities.NPCs.Eclipxie
             SoundEngine.PlaySound(SoundID.Item10, Projectile.position);
             return true;
         }
-        public override void OnHitPlayer(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             SoundEngine.PlaySound(SoundID.Item10, Projectile.position);
         }

@@ -4,6 +4,7 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.ObjectInteractions;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 
@@ -14,7 +15,7 @@ namespace Polarities.Items.Placeable.Furniture.Fractal
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = 1;
+            Item.ResearchUnlockCount = 1;
         }
 
         public override void SetDefaults()
@@ -52,7 +53,7 @@ namespace Polarities.Items.Placeable.Furniture.Fractal
             TileObjectData.newTile.LavaDeath = false;
             TileObjectData.newTile.DrawYOffset = 2;
             TileObjectData.addTile(Type);
-            AddMapEntry(new Color(33, 88, 106), CreateMapEntryName("FractalAltar"));
+            AddMapEntry(new Color(33, 88, 106), Language.GetText("Mods.Polarities.MapObject.FractalAltar"));
             AnimationFrameHeight = 72;
 
             MinPick = 110;

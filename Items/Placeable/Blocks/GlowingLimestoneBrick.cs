@@ -14,7 +14,7 @@ namespace Polarities.Items.Placeable.Blocks
         {
             ItemID.Sets.SortingPriorityMaterials[Item.type] = ItemID.Sets.SortingPriorityMaterials[ItemID.MarbleBlock];
 
-            SacrificeTotal = (100);
+            Item.ResearchUnlockCount = (100);
         }
 
         public override void SetDefaults()

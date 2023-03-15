@@ -5,6 +5,7 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 
@@ -16,7 +17,7 @@ namespace Polarities.Items.Placeable.Blocks.Fractal
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = 100;
+            Item.ResearchUnlockCount = 100;
         }
 
         public override void SetDefaults()
@@ -74,7 +75,7 @@ namespace Polarities.Items.Placeable.Blocks.Fractal
                 ModContent.TileType<FractalDustTile>(),
             };
 
-            AddMapEntry(new Color(160, 88, 173), CreateMapEntryName("Fractus"));
+            AddMapEntry(new Color(160, 88, 173), Language.GetText("Mods.Polarities.MapObject.Fractus"));
 
             TileObjectData.addTile(Type);
         }
@@ -169,7 +170,7 @@ namespace Polarities.Items.Placeable.Blocks.Fractal
                 ModContent.TileType<FractusBase>()
             };
 
-            AddMapEntry(new Color(160, 88, 173), CreateMapEntryName("Fractus"));
+            AddMapEntry(new Color(160, 88, 173), Language.GetText("Mods.Polarities.MapObject.FractusFruit"));
 
             TileObjectData.addTile(Type);
         }
@@ -307,7 +308,7 @@ namespace Polarities.Items.Placeable.Blocks.Fractal
                 ModContent.TileType<FractusRootedLeft>()
             };
 
-            AddMapEntry(new Color(160, 88, 173), CreateMapEntryName("Fractus"));
+            AddMapEntry(new Color(160, 88, 173), Language.GetText("Mods.Polarities.MapObject.Fractus"));
 
             TileObjectData.addTile(Type);
         }
@@ -447,7 +448,7 @@ namespace Polarities.Items.Placeable.Blocks.Fractal
                 ModContent.TileType<FractusRootedRight>()
             };
 
-            AddMapEntry(new Color(160, 88, 173), CreateMapEntryName("Fractus"));
+            AddMapEntry(new Color(160, 88, 173),    Language.GetText("Mods.Polarities.MapObject.Fractus"));
 
             TileObjectData.addTile(Type);
         }
@@ -590,7 +591,7 @@ namespace Polarities.Items.Placeable.Blocks.Fractal
                 ModContent.TileType<FractusBase>()
             };
 
-            AddMapEntry(new Color(243, 112, 255), CreateMapEntryName("FractusFruit"));
+            AddMapEntry(new Color(243, 112, 255), Language.GetText("Mods.Polarities.MapObject.FractusFruit"));
 
             TileObjectData.addTile(Type);
         }
@@ -644,7 +645,7 @@ namespace Polarities.Items.Placeable.Blocks.Fractal
                 ModContent.TileType<FractusRootedLeft>()
             };
 
-            AddMapEntry(new Color(243, 112, 255), CreateMapEntryName("FractusFruit"));
+            AddMapEntry(new Color(243, 112, 255), Language.GetText("Mods.Polarities.MapObject.FractusFruit"));
 
             TileObjectData.addTile(Type);
         }
@@ -698,7 +699,7 @@ namespace Polarities.Items.Placeable.Blocks.Fractal
                 ModContent.TileType<FractusRootedRight>()
             };
 
-            AddMapEntry(new Color(243, 112, 255), CreateMapEntryName("FractusFruit"));
+            AddMapEntry(new Color(243, 112, 255), Language.GetText("Mods.Polarities.MapObject.FractusFruit"));
 
             TileObjectData.addTile(Type);
         }

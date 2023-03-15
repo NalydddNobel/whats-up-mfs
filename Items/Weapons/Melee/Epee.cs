@@ -12,7 +12,7 @@ namespace Polarities.Items.Weapons.Melee
         {
             Item.staff[Type] = true;
 
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
         }
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
@@ -67,7 +67,7 @@ namespace Polarities.Items.Weapons.Melee
             return player.itemTime > 0 ? null : false;
         }
 
-        public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
+        public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
         {
             player.velocity.X = -player.direction * 5;
             if (!target.immortal)

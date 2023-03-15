@@ -183,9 +183,9 @@ namespace Polarities.NPCs.Critters
 
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (5);
+            Item.ResearchUnlockCount = (5);
 
-            DisplayName.SetDefault("{$Mods.Polarities.NPCName.BabyWanderer}");
+            // DisplayName.SetDefault("{$Mods.Polarities.NPCName.BabyWanderer}");
 
             ItemID.Sets.IsLavaBait[Type] = true;
         }

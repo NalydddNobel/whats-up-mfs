@@ -1,12 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Polarities.Biomes.Fractal;
-using Polarities.Buffs;
 using Polarities.Items.Placeable.Bars;
 using Polarities.Items.Placeable.Blocks.Fractal;
 using Polarities.Items.Placeable.Furniture;
 using Polarities.Items.Placeable.Furniture.Fractal;
 using Polarities.Tiles;
-using SubworldLibrary;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -22,20 +20,16 @@ using Terraria.WorldBuilding;
 using static Terraria.ModLoader.ModContent;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 
-namespace Polarities
-{
-    public readonly struct BigRational : IComparable<BigRational>, IEquatable<BigRational>
-    {
+namespace Polarities {
+    public readonly struct BigRational : IComparable<BigRational>, IEquatable<BigRational> {
         public readonly BigInteger num;
         public readonly BigInteger den;
 
-        public int CompareTo(BigRational bigRational)
-        {
+        public int CompareTo(BigRational bigRational) {
             return (num * bigRational.den).CompareTo(den * bigRational.num);
         }
 
-        public bool Equals(BigRational bigRational)
-        {
+        public bool Equals(BigRational bigRational) {
             return (num * bigRational.den).Equals(den * bigRational.num);
         }
 
@@ -51,43 +45,35 @@ namespace Polarities
         public static BigRational operator *(BigRational a, BigRational b)
             => new BigRational(a.num * b.num, a.den * b.den);
 
-        public static BigRational operator /(BigRational a, BigRational b)
-        {
-            if (b.num == 0)
-            {
+        public static BigRational operator /(BigRational a, BigRational b) {
+            if (b.num == 0) {
                 throw new DivideByZeroException();
             }
             return new BigRational(a.num * b.den, a.den * b.num);
         }
 
-        public static BigRational operator /(BigRational a, int b)
-        {
-            if (b == 0)
-            {
+        public static BigRational operator /(BigRational a, int b) {
+            if (b == 0) {
                 throw new DivideByZeroException();
             }
             return new BigRational(a.num, a.den * b);
         }
 
-        public double ToDouble()
-        {
+        public double ToDouble() {
             BigInteger quotient = BigInteger.DivRem(num, den, out BigInteger remainder);
 
             return (double)quotient + (double)remainder / (double)den;
         }
 
-        public BigRational(BigInteger numerator, BigInteger denominator)
-        {
-            if (denominator == 0)
-            {
+        public BigRational(BigInteger numerator, BigInteger denominator) {
+            if (denominator == 0) {
                 throw new ArgumentException("Denominator cannot be zero.", nameof(denominator));
             }
 
             num = numerator / BigInteger.GreatestCommonDivisor(numerator, denominator);
             den = denominator / BigInteger.GreatestCommonDivisor(numerator, denominator);
 
-            if (den < 0)
-            {
+            if (den < 0) {
                 num = -num;
                 den = -den;
             }
@@ -96,7 +82,7 @@ namespace Polarities
         public override string ToString() => $"{num} / {den}";
     }
 
-    public class FractalSubworld : Subworld
+    public class FractalSubworld/* : Subworld*/ : ModSystem
     {
         //for data syncing
         public static TagCompound subworldSyncedData;
@@ -105,10 +91,8 @@ namespace Polarities
 
         internal static Dictionary<string, DownedFlag> DownedFunctions { get; private set; }
 
-        public override void Load()
-        {
-            DownedFunctions = new Dictionary<string, DownedFlag>()
-            {
+        public override void Load() {
+            DownedFunctions = new Dictionary<string, DownedFlag>() {
                 ["slimeKing"] = () => ref NPC.downedSlimeKing,
                 ["boss1"] = () => ref NPC.downedBoss1,
                 ["boss2"] = () => ref NPC.downedBoss2,
@@ -163,80 +147,68 @@ namespace Polarities
             };
         }
 
-        public override void Unload()
-        {
+        public override void Unload() {
             DownedFunctions?.Clear();
             DownedFunctions = null;
         }
 
-        public static void SaveUniversalData()
-        {
+        public static void SaveUniversalData() {
             var downed = new List<string>();
-            foreach (var pair in DownedFunctions)
-            {
-                if (pair.Value?.Invoke() == true)
-                {
+            foreach (var pair in DownedFunctions) {
+                if (pair.Value?.Invoke() == true) {
                     downed.Add(pair.Key);
                 }
             }
 
-            subworldSyncedData = new TagCompound()
-            {
+            subworldSyncedData = new TagCompound() {
                 ["downed"] = downed,
                 ["killCount"] = NPC.killCount.ToList(),
                 ["anglerQuest"] = Main.anglerQuest,
                 ["anglerQuestFinished"] = Main.anglerQuestFinished,
             };
         }
-        public static void LoadUniversalData()
-        {
-            if (subworldSyncedData.ContainsKey("downed"))
-            {
+        public static void LoadUniversalData() {
+            if (subworldSyncedData.ContainsKey("downed")) {
                 var downed = subworldSyncedData.GetList<string>("downed");
 
-                foreach (var pair in DownedFunctions)
-                {
-                    if (pair.Value != null && downed.Contains(pair.Key))
-                    {
+                foreach (var pair in DownedFunctions) {
+                    if (pair.Value != null && downed.Contains(pair.Key)) {
                         pair.Value() = true;
                     }
                 }
             }
-            if (subworldSyncedData.ContainsKey("killCount"))
-            {
+            if (subworldSyncedData.ContainsKey("killCount")) {
                 NPC.killCount = subworldSyncedData.GetList<int>("killCount").ToArray();
             }
-            if (subworldSyncedData.ContainsKey("anglerQuest"))
-            {
+            if (subworldSyncedData.ContainsKey("anglerQuest")) {
                 Main.anglerQuest = subworldSyncedData.GetInt("anglerQuest");
             }
-            if (subworldSyncedData.ContainsKey("anglerQuestFinished"))
-            {
+            if (subworldSyncedData.ContainsKey("anglerQuestFinished")) {
                 Main.anglerQuestFinished = subworldSyncedData.GetBool("anglerQuestFinished");
             }
         }
 
-        public static bool Active => SubworldSystem.IsActive<FractalSubworld>();
+        public static bool Active => false;
+        //public static bool Active => SubworldSystem.IsActive<FractalSubworld>();
 
         public static bool entering;
         public static bool exiting;
         private static int animSeed;
         public static Stopwatch animStopwatch = new Stopwatch();
 
-        public override void DrawMenu(GameTime gameTime)
-        {
-            base.DrawMenu(gameTime);
-            Mod.Logger.Debug("This is the menu.");
-        }
+        //public override void DrawMenu(GameTime gameTime)
+        //{
+        //    base.DrawMenu(gameTime);
+        //    Mod.Logger.Debug("This is the menu.");
+        //}
 
-        public override void DrawSetup(GameTime gameTime)
-        {
-            base.DrawSetup(gameTime);
-            Mod.Logger.Debug("This is the draw setup thing...?");
-        }
+        //public override void DrawSetup(GameTime gameTime)
+        //{
+        //    base.DrawSetup(gameTime);
+        //    Mod.Logger.Debug("This is the draw setup thing...?");
+        //}
 
-        public static void DrawEntryAnimation(GameTime gameTime)
-        {
+        public static void DrawEntryAnimation(GameTime gameTime) {
             //if (!animStopwatch.IsRunning)
             //{
             //    //initialize animation
@@ -302,67 +274,66 @@ namespace Polarities
             //Main.spriteBatch.End();
         }
 
-        public static void DoEnter()
-        {
+        public static void DoEnter() {
             entering = true;
             SaveUniversalData();
 
-            for (int i = 0; i < Main.maxProjectiles; i++)
-            {
+            for (int i = 0; i < Main.maxProjectiles; i++) {
                 Main.projectile[i].active = false;
             }
 
-            SubworldSystem.Enter<FractalSubworld>();
+            //SubworldSystem.Enter<FractalSubworld>();
         }
-        public static void DoExit()
-        {
-            for (int i = 0; i < Main.maxProjectiles; i++)
-            {
+        public static void DoExit() {
+            for (int i = 0; i < Main.maxProjectiles; i++) {
                 Main.projectile[i].active = false;
             }
 
-            SubworldSystem.Exit();
+            //SubworldSystem.Exit();
         }
 
-        public override void OnLoad()
-        {
-            Main.dayTime = true;
-            Main.time = Main.dayLength / 2;
-            SubworldSystem.noReturn = false;
+        //public override void OnLoad()
+        //{
+        //    Main.dayTime = true;
+        //    Main.time = Main.dayLength / 2;
+        //    SubworldSystem.noReturn = false;
 
-            ResetDimension();
+        //    ResetDimension();
 
-            base.OnLoad();
-        }
-        public override void OnUnload()
-        {
-            base.OnUnload();
-        }
+        //    base.OnLoad();
+        //}
+        //public override void OnUnload()
+        //{
+        //    base.OnUnload();
+        //}
 
-        public override void OnEnter()
-        {
-            if (Main.netMode != NetmodeID.Server)
-            {
-                Main.LocalPlayer.ClearBuff(ModContent.BuffType<Fractalizing>());
-                Main.LocalPlayer.Polarities().fractalization = 0;
-            }
-        }
+        //public override void OnEnter()
+        //{
+        //    if (Main.netMode != NetmodeID.Server)
+        //    {
+        //        Main.LocalPlayer.ClearBuff(ModContent.BuffType<Fractalizing>());
+        //        Main.LocalPlayer.Polarities().fractalization = 0;
+        //    }
+        //}
 
-        public override void OnExit()
-        {
-            if (Main.netMode != NetmodeID.Server)
-            {
-                Main.LocalPlayer.ClearBuff(ModContent.BuffType<Fractalizing>());
-                Main.LocalPlayer.Polarities().fractalization = 0;
-            }
-        }
+        //public override void OnExit()
+        //{
+        //    if (Main.netMode != NetmodeID.Server)
+        //    {
+        //        Main.LocalPlayer.ClearBuff(ModContent.BuffType<Fractalizing>());
+        //        Main.LocalPlayer.Polarities().fractalization = 0;
+        //    }
+        //}
 
 
-        public override int Width => Main.maxTilesX; //lower these values if testing worldgen because tbh it takes a while
-        public override int Height => Main.maxTilesY;
+        public int Width => Main.maxTilesX; //lower these values if testing worldgen because tbh it takes a while
+        public int Height => Main.maxTilesY;
 
-        public override bool ShouldSave => true;
-        public override bool NormalUpdates => false;
+        //public override int Width => Main.maxTilesX; //lower these values if testing worldgen because tbh it takes a while
+        //public override int Height => Main.maxTilesY;
+
+        //public override bool ShouldSave => true;
+        //public override bool NormalUpdates => false;
 
         private static int COEFFICIENTCOUNT = 192; //lower these values if testing worldgen because tbh it takes a while
         private static int MAXITERATIONS = 256;
@@ -392,12 +363,10 @@ namespace Polarities
         //hardmode danger time is 5 minutes, health is at least halved here
         //post-golem time is 10 minutes, health is reduced to zero here
 
-        public static int HARDMODE_DANGER_TIME
-        {
+        public static int HARDMODE_DANGER_TIME {
             get => Main.expertMode ? 18000 : 27000;
         }
-        public static int POST_SENTINEL_TIME
-        {
+        public static int POST_SENTINEL_TIME {
             get => Main.expertMode ? 36000 : 54000;
         }
 
@@ -607,7 +576,8 @@ namespace Polarities
         };
         private static int wastesDirection;
 
-        public override List<GenPass> Tasks => new List<GenPass>()
+        //public override List<GenPass> Tasks => new List<GenPass>()
+        public List<GenPass> Tasks => new List<GenPass>()
         {
             //for generating magic mandelbrot numbers
             /*new PassLegacy("UAndACoefficient", (progress, config) =>
@@ -694,8 +664,7 @@ namespace Polarities
             })
         };
 
-        private void InitGenpass(GenerationProgress progress)
-        {
+        private void InitGenpass(GenerationProgress progress) {
             //set protected tiles
             protectedTiles = new int[]{
                 TileType<FractalBrickTile>(),
@@ -705,8 +674,7 @@ namespace Polarities
             WorldGen.noTileActions = true;
         }
 
-        private void EndGenpass(GenerationProgress progress)
-        {
+        private void EndGenpass(GenerationProgress progress) {
             WorldGen.noTileActions = false;
         }
 
@@ -782,22 +750,18 @@ namespace Polarities
             modWorld.mod.Logger.Info(bCoefficientString);
         }*/
 
-        private void FractalTerrainGenpass(GenerationProgress progress)
-        {
+        private void FractalTerrainGenpass(GenerationProgress progress) {
             progress.Message = "Generating fractal terrain"; //Sets the text above the worldgen progress bar
             Main.worldSurface = Main.maxTilesY - 42; //Hides the underground layer just out of bounds
             Main.rockLayer = Main.maxTilesY; //Hides the cavern layer way out of bounds
-            SubworldSystem.hideUnderworld = true;
-            SubworldSystem.noReturn = true;
-            for (int i = 0; i < 8; i++)
-            {
+            //SubworldSystem.hideUnderworld = true;
+            //SubworldSystem.noReturn = true;
+            for (int i = 0; i < 8; i++) {
                 randOffsets[i] = WorldGen.genRand.NextDouble() * 2 * Math.PI;
             }
 
-            for (int i = 0; i < Main.maxTilesX; i++)
-            {
-                for (int j = 0; j < Main.maxTilesY; j++)
-                {
+            for (int i = 0; i < Main.maxTilesX; i++) {
+                for (int j = 0; j < Main.maxTilesY; j++) {
                     progress.Set((j + i * Main.maxTilesY) / (float)(Main.maxTilesX * Main.maxTilesY)); //Controls the progress bar, should only be set between 0f and 1f
 
 
@@ -809,39 +773,32 @@ namespace Polarities
                     float varX = vars.X;
                     float varY = vars.Y;
 
-                    for (int iterations = 0; iterations < MAXITERATIONS; iterations++)
-                    {
+                    for (int iterations = 0; iterations < MAXITERATIONS; iterations++) {
                         double newX = x * x - y * y + varX;
                         double newY = 2 * x * y + varY;
                         x = newX;
                         y = newY;
 
-                        if (x * x + y * y > 4)
-                        {
+                        if (x * x + y * y > 4) {
                             break;
                         }
                     }
                     var tile = Main.tile[i, j];
-                    if (x * x + y * y < 4)
-                    {
+                    if (x * x + y * y < 4) {
                         tile.HasTile = true;
                         Main.tile[i, j].TileType = (ushort)TileType<FractalMatterTile>();
                     }
-                    else
-                    {
+                    else {
                         tile.HasTile = false;
                     }
                 }
             }
 
-            for (int i = 1; i < Main.maxTilesX - 1; i++)
-            {
-                for (int j = 1; j < Main.maxTilesY - 1; j++)
-                {
+            for (int i = 1; i < Main.maxTilesX - 1; i++) {
+                for (int j = 1; j < Main.maxTilesY - 1; j++) {
                     if (Main.tile[i - 1, j - 1].HasTile && Main.tile[i - 1, j].HasTile && Main.tile[i - 1, j + 1].HasTile &&
                     Main.tile[i, j - 1].HasTile && Main.tile[i, j].HasTile && Main.tile[i, j + 1].HasTile &&
-                    Main.tile[i + 1, j - 1].HasTile && Main.tile[i + 1, j].HasTile && Main.tile[i + 1, j + 1].HasTile)
-                    {
+                    Main.tile[i + 1, j - 1].HasTile && Main.tile[i + 1, j].HasTile && Main.tile[i + 1, j + 1].HasTile) {
                         Main.tile[i, j].WallType = (ushort)WallType<FractalMatterWallNatural>();
                     }
                 }
@@ -850,10 +807,8 @@ namespace Polarities
             Main.spawnTileY = Main.maxTilesY - 2;
             while (Main.tile[Main.spawnTileX, Main.spawnTileY].HasTile || Main.tile[Main.spawnTileX - 2, Main.spawnTileY].HasTile || Main.tile[Main.spawnTileX - 1, Main.spawnTileY].HasTile ||
             Main.tile[Main.spawnTileX, Main.spawnTileY - 2].HasTile || Main.tile[Main.spawnTileX - 2, Main.spawnTileY - 2].HasTile || Main.tile[Main.spawnTileX - 1, Main.spawnTileY - 2].HasTile ||
-            Main.tile[Main.spawnTileX, Main.spawnTileY - 1].HasTile || Main.tile[Main.spawnTileX - 2, Main.spawnTileY - 1].HasTile || Main.tile[Main.spawnTileX - 1, Main.spawnTileY - 1].HasTile)
-            {
-                if (Main.spawnTileY == 1)
-                {
+            Main.tile[Main.spawnTileX, Main.spawnTileY - 1].HasTile || Main.tile[Main.spawnTileX - 2, Main.spawnTileY - 1].HasTile || Main.tile[Main.spawnTileX - 1, Main.spawnTileY - 1].HasTile) {
+                if (Main.spawnTileY == 1) {
                     Main.spawnTileY = Main.maxTilesY - 1;
                     Main.spawnTileX++;
                 }
@@ -862,23 +817,19 @@ namespace Polarities
             }
         }
 
-        private void FractalCavesGenpass(GenerationProgress progress)
-        {
+        private void FractalCavesGenpass(GenerationProgress progress) {
             progress.Message = "Generating caves";
 
-            for (int a = 0; a < NUMCAVES; a++)
-            {
+            for (int a = 0; a < NUMCAVES; a++) {
                 progress.Set(a / (float)NUMCAVES);
 
                 int centerX = 0;
                 int centerY = 0;
-                for (int tries = 0; tries < 256; tries++)
-                {
+                for (int tries = 0; tries < 256; tries++) {
                     centerX = WorldGen.genRand.Next(Main.maxTilesX);
                     centerY = WorldGen.genRand.Next(Main.maxTilesY);
 
-                    if (Math.Pow((centerX - Main.maxTilesX / 2) / (float)Main.maxTilesX, 2) < 2 * (centerY - Main.maxTilesY / 2) / (float)Main.maxTilesY)
-                    {
+                    if (Math.Pow((centerX - Main.maxTilesX / 2) / (float)Main.maxTilesX, 2) < 2 * (centerY - Main.maxTilesY / 2) / (float)Main.maxTilesY) {
                         break;
                     }
                 }
@@ -890,28 +841,23 @@ namespace Polarities
                 float varX = vars.X;
                 float varY = vars.Y;
 
-                for (int i = Math.Max(0, centerX - scale * 2); i <= Math.Min(Main.maxTilesX - 1, centerX + scale * 2); i++)
-                {
-                    for (int j = Math.Max(0, centerY - scale * 2); j <= Math.Min(Main.maxTilesY - 1, centerY + scale * 2); j++)
-                    {
+                for (int i = Math.Max(0, centerX - scale * 2); i <= Math.Min(Main.maxTilesX - 1, centerX + scale * 2); i++) {
+                    for (int j = Math.Max(0, centerY - scale * 2); j <= Math.Min(Main.maxTilesY - 1, centerY + scale * 2); j++) {
                         double x = (centerX - i) / (double)scale * Math.Cos(rot) - (centerY - j) / (double)scale * Math.Sin(rot);
                         double y = (centerY - j) / (double)scale * Math.Cos(rot) + (centerX - i) / (double)scale * Math.Sin(rot);
 
-                        for (int iterations = 0; iterations < 20; iterations++)
-                        {
+                        for (int iterations = 0; iterations < 20; iterations++) {
                             double newX = x * x - y * y + varX;
                             double newY = 2 * x * y + varY;
                             x = newX;
                             y = newY;
 
-                            if (x * x + y * y > 4)
-                            {
+                            if (x * x + y * y > 4) {
                                 break;
                             }
                         }
                         var tile = Main.tile[i, j];
-                        if (x * x + y * y < 4)
-                        {
+                        if (x * x + y * y < 4) {
                             tile.HasTile = false;
                         }
                     }
@@ -919,38 +865,32 @@ namespace Polarities
             }
         }
 
-        private void FractalWatersGenpass(GenerationProgress progress)
-        {
+        private void FractalWatersGenpass(GenerationProgress progress) {
             progress.Message = "Flood-filling";
 
             List<int[]> waterPoints = new List<int[]>();
 
-            for (int y = 3 * Main.maxTilesY / 4; y < Main.maxTilesY; y++)
-            {
+            for (int y = 3 * Main.maxTilesY / 4; y < Main.maxTilesY; y++) {
                 Tile tile;
 
                 //fill this whole rectangle
-                for (int x = 0; x < Main.maxTilesX / 6 - 1; x++)
-                {
+                for (int x = 0; x < Main.maxTilesX / 6 - 1; x++) {
                     tile = Framing.GetTileSafely(x, y);
 
                     //fill with water
 
-                    if (!tile.HasTile || !Main.tileSolid[tile.TileType] || Main.tileSolidTop[tile.TileType])
-                    {
+                    if (!tile.HasTile || !Main.tileSolid[tile.TileType] || Main.tileSolidTop[tile.TileType]) {
                         tile.LiquidType = 0;
                         tile.LiquidAmount = 255;
                     }
                 }
                 //fill this whole other rectangle
-                for (int x = 5 * Main.maxTilesX / 6 + 1; x < Main.maxTilesX; x++)
-                {
+                for (int x = 5 * Main.maxTilesX / 6 + 1; x < Main.maxTilesX; x++) {
                     tile = Framing.GetTileSafely(x, y);
 
                     //fill with water
 
-                    if (!tile.HasTile || !Main.tileSolid[tile.TileType] || Main.tileSolidTop[tile.TileType])
-                    {
+                    if (!tile.HasTile || !Main.tileSolid[tile.TileType] || Main.tileSolidTop[tile.TileType]) {
                         tile.LiquidType = 0;
                         tile.LiquidAmount = 255;
                     }
@@ -959,8 +899,7 @@ namespace Polarities
                 tile = Framing.GetTileSafely(Main.maxTilesX / 6 - 1, y);
 
                 //add to water points
-                if (!tile.HasTile || !Main.tileSolid[tile.TileType] || Main.tileSolidTop[tile.TileType])
-                {
+                if (!tile.HasTile || !Main.tileSolid[tile.TileType] || Main.tileSolidTop[tile.TileType]) {
                     waterPoints.Add(new int[2] { Main.maxTilesX / 6 - 1, y });
 
                     tile.LiquidType = 0;
@@ -970,8 +909,7 @@ namespace Polarities
                 tile = Framing.GetTileSafely(5 * Main.maxTilesX / 6, y);
 
                 //add to water points
-                if (!tile.HasTile || !Main.tileSolid[tile.TileType] || Main.tileSolidTop[tile.TileType])
-                {
+                if (!tile.HasTile || !Main.tileSolid[tile.TileType] || Main.tileSolidTop[tile.TileType]) {
                     waterPoints.Add(new int[2] { 5 * Main.maxTilesX / 6, y });
 
                     tile.LiquidType = 0;
@@ -979,8 +917,7 @@ namespace Polarities
                 }
             }
 
-            while (waterPoints.Count > 0)
-            {
+            while (waterPoints.Count > 0) {
                 int x;
                 int y;
 
@@ -988,11 +925,9 @@ namespace Polarities
                 x = waterPoints[0][0] + 1;
                 y = waterPoints[0][1];
 
-                if (x >= 0 && x < Main.maxTilesX && y >= 0 && y < Main.maxTilesY)
-                {
+                if (x >= 0 && x < Main.maxTilesX && y >= 0 && y < Main.maxTilesY) {
                     Tile tile = Framing.GetTileSafely(x, y);
-                    if ((!tile.HasTile || !Main.tileSolid[tile.TileType] || Main.tileSolidTop[tile.TileType]) && tile.LiquidAmount == 0)
-                    {
+                    if ((!tile.HasTile || !Main.tileSolid[tile.TileType] || Main.tileSolidTop[tile.TileType]) && tile.LiquidAmount == 0) {
                         waterPoints.Add(new int[2] { x, y });
 
                         tile.LiquidType = 0;
@@ -1002,11 +937,9 @@ namespace Polarities
                 x = waterPoints[0][0] - 1;
                 y = waterPoints[0][1];
 
-                if (x >= 0 && x < Main.maxTilesX && y >= 0 && y < Main.maxTilesY)
-                {
+                if (x >= 0 && x < Main.maxTilesX && y >= 0 && y < Main.maxTilesY) {
                     Tile tile = Framing.GetTileSafely(x, y);
-                    if ((!tile.HasTile || !Main.tileSolid[tile.TileType] || Main.tileSolidTop[tile.TileType]) && tile.LiquidAmount == 0)
-                    {
+                    if ((!tile.HasTile || !Main.tileSolid[tile.TileType] || Main.tileSolidTop[tile.TileType]) && tile.LiquidAmount == 0) {
                         waterPoints.Add(new int[2] { x, y });
 
                         tile.LiquidType = 0;
@@ -1016,11 +949,9 @@ namespace Polarities
                 x = waterPoints[0][0];
                 y = waterPoints[0][1] + 1;
 
-                if (x >= 0 && x < Main.maxTilesX && y >= 0 && y < Main.maxTilesY)
-                {
+                if (x >= 0 && x < Main.maxTilesX && y >= 0 && y < Main.maxTilesY) {
                     Tile tile = Framing.GetTileSafely(x, y);
-                    if ((!tile.HasTile || !Main.tileSolid[tile.TileType] || Main.tileSolidTop[tile.TileType]) && tile.LiquidAmount == 0)
-                    {
+                    if ((!tile.HasTile || !Main.tileSolid[tile.TileType] || Main.tileSolidTop[tile.TileType]) && tile.LiquidAmount == 0) {
                         waterPoints.Add(new int[2] { x, y });
 
                         tile.LiquidType = 0;
@@ -1033,35 +964,28 @@ namespace Polarities
             }
         }
 
-        private void FractalCoastsGenpass(GenerationProgress progress)
-        {
+        private void FractalCoastsGenpass(GenerationProgress progress) {
             progress.Message = "Coasting";
 
-            for (int x = 10; x < Main.maxTilesX - 10; x++)
-            {
-                for (int y = 10; y < Main.maxTilesY - 10; y++)
-                {
+            for (int x = 10; x < Main.maxTilesX - 10; x++) {
+                for (int y = 10; y < Main.maxTilesY - 10; y++) {
                     float xFrac = (x + WorldGen.genRand.NextFloat(-20, 20)) / Main.maxTilesX;
                     float yFrac = (y + WorldGen.genRand.NextFloat(-20, 20)) / Main.maxTilesY;
 
-                    if (yFrac > 2 - 3 * (2 * xFrac - 1) * (2 * xFrac - 1))
-                    {
+                    if (yFrac > 2 - 3 * (2 * xFrac - 1) * (2 * xFrac - 1)) {
                         Tile tile = Framing.GetTileSafely(x, y);
 
-                        if (tile.HasTile && !protectedTiles.Contains(tile.TileType))
-                        {
+                        if (tile.HasTile && !protectedTiles.Contains(tile.TileType)) {
                             tile.TileType = (ushort)TileType<FractalDustTile>();
 
                             if (WorldGen.genRand.NextBool(20) ||
                                 (!Framing.GetTileSafely(x, y + 1).HasTile || protectedTiles.Contains(Framing.GetTileSafely(x, y + 1).TileType)) ||
                                 ((!Framing.GetTileSafely(x, y + 2).HasTile || protectedTiles.Contains(Framing.GetTileSafely(x, y + 2).TileType)) && WorldGen.genRand.NextBool(2)) ||
-                                ((!Framing.GetTileSafely(x, y + 3).HasTile || protectedTiles.Contains(Framing.GetTileSafely(x, y + 3).TileType)) && WorldGen.genRand.NextBool(3)))
-                            {
+                                ((!Framing.GetTileSafely(x, y + 3).HasTile || protectedTiles.Contains(Framing.GetTileSafely(x, y + 3).TileType)) && WorldGen.genRand.NextBool(3))) {
                                 tile.TileType = (ushort)TileType<FractalDuststoneTile>();
                             }
                         }
-                        if (tile.WallType != 0)
-                        {
+                        if (tile.WallType != 0) {
                             tile.WallType = (ushort)WallType<FractalDuststoneWallNatural>();
                         }
                     }
@@ -1069,8 +993,7 @@ namespace Polarities
             }
         }
 
-        private void FractalWastesGenpass(GenerationProgress progress)
-        {
+        private void FractalWastesGenpass(GenerationProgress progress) {
             progress.Message = "Wasting time";
 
             wastesDirection = (WorldGen.genRand.NextBool() ? 1 : -1);
@@ -1085,45 +1008,36 @@ namespace Polarities
             float varX = vars.X;
             float varY = vars.Y;
 
-            for (int i = Math.Max(0, centerX - scale * 2); i <= Math.Min(Main.maxTilesX - 1, centerX + scale * 2); i++)
-            {
-                for (int j = Math.Max(0, centerY - scale * 2); j <= Math.Min(Main.maxTilesY - 4, centerY + scale * 2); j++)
-                {
+            for (int i = Math.Max(0, centerX - scale * 2); i <= Math.Min(Main.maxTilesX - 1, centerX + scale * 2); i++) {
+                for (int j = Math.Max(0, centerY - scale * 2); j <= Math.Min(Main.maxTilesY - 4, centerY + scale * 2); j++) {
                     Tile tile = Framing.GetTileSafely(i, j);
 
-                    if (tile.HasTile || tile.WallType != 0)
-                    {
+                    if (tile.HasTile || tile.WallType != 0) {
                         double x = (centerX - i) / (double)scale * Math.Cos(rot) - (centerY - j) / (double)scale * Math.Sin(rot);
                         double y = (centerY - j) / (double)scale * Math.Cos(rot) + (centerX - i) / (double)scale * Math.Sin(rot);
 
-                        for (int iterations = 0; iterations < 20; iterations++)
-                        {
+                        for (int iterations = 0; iterations < 20; iterations++) {
                             double newX = x * x - y * y + varX + 0.001f * FindRandomVariance(i * 2, j * 2).X;
                             double newY = 2 * x * y + varY + 0.001f * FindRandomVariance(i * 2, j * 2).Y;
                             x = newX;
                             y = newY;
 
-                            if (x * x + y * y > 4)
-                            {
+                            if (x * x + y * y > 4) {
                                 break;
                             }
                         }
-                        if (x * x + y * y < 4)
-                        {
-                            if (tile.HasTile && !protectedTiles.Contains(tile.TileType))
-                            {
+                        if (x * x + y * y < 4) {
+                            if (tile.HasTile && !protectedTiles.Contains(tile.TileType)) {
                                 tile.TileType = (ushort)TileType<FractalDustTile>();
 
                                 if (WorldGen.genRand.NextBool(20) ||
                                     (!Framing.GetTileSafely(i, j + 1).HasTile || protectedTiles.Contains(Framing.GetTileSafely(i, j + 1).TileType)) ||
                                     ((!Framing.GetTileSafely(i, j + 2).HasTile || protectedTiles.Contains(Framing.GetTileSafely(i, j + 2).TileType)) && WorldGen.genRand.NextBool(2)) ||
-                                    ((!Framing.GetTileSafely(i, j + 3).HasTile || protectedTiles.Contains(Framing.GetTileSafely(i, j + 3).TileType)) && WorldGen.genRand.NextBool(3)))
-                                {
+                                    ((!Framing.GetTileSafely(i, j + 3).HasTile || protectedTiles.Contains(Framing.GetTileSafely(i, j + 3).TileType)) && WorldGen.genRand.NextBool(3))) {
                                     tile.TileType = (ushort)TileType<FractalDuststoneTile>();
                                 }
                             }
-                            if (tile.WallType != 0)
-                            {
+                            if (tile.WallType != 0) {
                                 tile.WallType = (ushort)WallType<FractalDuststoneWallNatural>();
                             }
                         }
@@ -1132,24 +1046,19 @@ namespace Polarities
             }
         }
 
-        private void FractalStrandsGenpass(GenerationProgress progress)
-        {
+        private void FractalStrandsGenpass(GenerationProgress progress) {
             progress.Message = "Generating strands";
 
             //strand forest
-            for (int i = 0; i < Main.maxTilesX; i++)
-            {
-                for (int j = 0; j < Main.maxTilesY; j++)
-                {
+            for (int i = 0; i < Main.maxTilesX; i++) {
+                for (int j = 0; j < Main.maxTilesY; j++) {
                     double x = (2 * i / (double)Width - 1) / 128 * Width / Height;
                     double y = (2 * j / (double)Height - 2) / 128;
 
                     Vector2 vars = new Vector2((float)x, (float)y) + FindRandomVariance(i, j) / 1024 * (j / (float)Height); //new Vector2((float)expInterpolate(-1.77985, -1.779, j / (double)Height, Math.Pow(FEIGENBAUMCONSTANT, 0.25)), 0) + FindRandomVariance(i, j) / (int)Math.Pow(2, 15) * (j / (float)Height);
 
-                    if ((vars - new Vector2(0.02f * wastesDirection, -0.02f)).Length() < 0.015f)
-                    {
-                        if (Main.tile[i, j].HasTile && !protectedTiles.Contains(Main.tile[i, j].TileType))
-                        {
+                    if ((vars - new Vector2(0.02f * wastesDirection, -0.02f)).Length() < 0.015f) {
+                        if (Main.tile[i, j].HasTile && !protectedTiles.Contains(Main.tile[i, j].TileType)) {
                             WorldGen.PlaceTile(i, j, TileType<FractalStrandsTile>(), mute: true, forced: true);
                             if (Main.tile[i, j].WallType != 0) Main.tile[i, j].WallType = (ushort)WallType<FractalStrandsWallNatural>();
                         }
@@ -1157,8 +1066,7 @@ namespace Polarities
                 }
             }
 
-            for (int a = 0; a < NUMSTRANDS; a++)
-            {
+            for (int a = 0; a < NUMSTRANDS; a++) {
                 progress.Set(a / (float)NUMSTRANDS);
 
                 float xFrac;
@@ -1166,19 +1074,16 @@ namespace Polarities
 
                 int centerX = 0;
                 int centerY = 0;
-                for (int tries = 0; tries < 256; tries++)
-                {
+                for (int tries = 0; tries < 256; tries++) {
                     centerX = WorldGen.genRand.Next(Main.maxTilesX);
                     centerY = WorldGen.genRand.Next(Main.maxTilesY);
 
-                    if (Main.tile[centerX, centerY].HasTile && !protectedTiles.Contains(Main.tile[centerX, centerY].TileType))
-                    {
+                    if (Main.tile[centerX, centerY].HasTile && !protectedTiles.Contains(Main.tile[centerX, centerY].TileType)) {
                         xFrac = centerX / (float)Main.maxTilesX;
                         yFrac = centerY / (float)Main.maxTilesY;
 
                         //strands shouldn't generate in the wastes
-                        if (yFrac > 2 - 3 * (2 * xFrac - 1) * (2 * xFrac - 1) || Framing.GetTileSafely(centerX, centerY).WallType != (ushort)WallType<FractalDuststoneWallNatural>())
-                        {
+                        if (yFrac > 2 - 3 * (2 * xFrac - 1) * (2 * xFrac - 1) || Framing.GetTileSafely(centerX, centerY).WallType != (ushort)WallType<FractalDuststoneWallNatural>()) {
                             break;
                         }
                     }
@@ -1191,8 +1096,7 @@ namespace Polarities
 
                 int tileType = TileType<FractalStrandsTile>();
                 int wallType = WallType<FractalStrandsWallNatural>();
-                if ((vars - new Vector2(-0.02f * wastesDirection, -0.02f)).Length() < 0.015f)
-                {
+                if ((vars - new Vector2(-0.02f * wastesDirection, -0.02f)).Length() < 0.015f) {
                     //in the forest, replace strands with tiles
                     tileType = TileType<FractalMatterTile>();
                     wallType = WallType<FractalMatterWallNatural>();
@@ -1204,8 +1108,7 @@ namespace Polarities
                 xFrac = centerX / (float)Main.maxTilesX;
                 yFrac = centerY / (float)Main.maxTilesY;
 
-                if (yFrac > 2 - 3 * (2 * xFrac - 1) * (2 * xFrac - 1))
-                {
+                if (yFrac > 2 - 3 * (2 * xFrac - 1) * (2 * xFrac - 1)) {
                     scale = WorldGen.genRand.Next(96, 120);
                 }
 
@@ -1215,29 +1118,23 @@ namespace Polarities
                 float varX = vars.X;
                 float varY = vars.Y;
 
-                for (int i = Math.Max(0, centerX - scale * 2); i <= Math.Min(Main.maxTilesX - 1, centerX + scale * 2); i++)
-                {
-                    for (int j = Math.Max(0, centerY - scale * 2); j <= Math.Min(Main.maxTilesY - 1, centerY + scale * 2); j++)
-                    {
-                        if (Main.tile[i, j].HasTile && !protectedTiles.Contains(Main.tile[i, j].TileType))
-                        {
+                for (int i = Math.Max(0, centerX - scale * 2); i <= Math.Min(Main.maxTilesX - 1, centerX + scale * 2); i++) {
+                    for (int j = Math.Max(0, centerY - scale * 2); j <= Math.Min(Main.maxTilesY - 1, centerY + scale * 2); j++) {
+                        if (Main.tile[i, j].HasTile && !protectedTiles.Contains(Main.tile[i, j].TileType)) {
                             double x = (centerX - i) / (double)scale * Math.Cos(rot) - (centerY - j) / (double)scale * Math.Sin(rot);
                             double y = (centerY - j) / (double)scale * Math.Cos(rot) + (centerX - i) / (double)scale * Math.Sin(rot);
 
-                            for (int iterations = 0; iterations < 20; iterations++)
-                            {
+                            for (int iterations = 0; iterations < 20; iterations++) {
                                 double newX = x * x - y * y + varX;
                                 double newY = 2 * x * y + varY;
                                 x = newX;
                                 y = newY;
 
-                                if (x * x + y * y > 4)
-                                {
+                                if (x * x + y * y > 4) {
                                     break;
                                 }
                             }
-                            if (x * x + y * y < 4)
-                            {
+                            if (x * x + y * y < 4) {
                                 WorldGen.PlaceTile(i, j, tileType, mute: true, forced: true);
                                 if (Main.tile[i, j].WallType != 0) Main.tile[i, j].WallType = (ushort)wallType;
                             }
@@ -1247,29 +1144,24 @@ namespace Polarities
             }
         }
 
-        private void FractalOresGenpass(GenerationProgress progress)
-        {
+        private void FractalOresGenpass(GenerationProgress progress) {
             progress.Message = "Generating ores";
 
-            for (int a = 0; a < NUM_LIGHTSLATE_VEINS; a++)
-            {
+            for (int a = 0; a < NUM_LIGHTSLATE_VEINS; a++) {
                 progress.Set(a / (float)NUM_LIGHTSLATE_VEINS / 3);
 
                 int centerX = 0;
                 int centerY = 0;
-                for (int tries = 0; tries < 256; tries++)
-                {
+                for (int tries = 0; tries < 256; tries++) {
                     centerX = WorldGen.genRand.Next(Main.maxTilesX);
                     centerY = WorldGen.genRand.Next(Main.maxTilesY);
 
-                    if (Main.tile[centerX, centerY].HasTile)
-                    {
+                    if (Main.tile[centerX, centerY].HasTile) {
                         float xFrac = centerX / (float)Main.maxTilesX;
                         float yFrac = centerY / (float)Main.maxTilesY;
 
                         //lightslate should be more common in the oceans
-                        if (WorldGen.genRand.NextBool() || yFrac > 2 - 3 * (2 * xFrac - 1) * (2 * xFrac - 1))
-                        {
+                        if (WorldGen.genRand.NextBool() || yFrac > 2 - 3 * (2 * xFrac - 1) * (2 * xFrac - 1)) {
                             break;
                         }
                     }
@@ -1286,37 +1178,30 @@ namespace Polarities
                 float varX = vars.X;
                 float varY = vars.Y;
 
-                for (int i = Math.Max(0, centerX - scale * 2); i <= Math.Min(Main.maxTilesX - 1, centerX + scale * 2); i++)
-                {
-                    for (int j = Math.Max(0, centerY - scale * 2); j <= Math.Min(Main.maxTilesY - 4, centerY + scale * 2); j++)
-                    {
-                        if (Main.tile[i, j].HasTile && !protectedTiles.Contains(Main.tile[i, j].TileType))
-                        {
+                for (int i = Math.Max(0, centerX - scale * 2); i <= Math.Min(Main.maxTilesX - 1, centerX + scale * 2); i++) {
+                    for (int j = Math.Max(0, centerY - scale * 2); j <= Math.Min(Main.maxTilesY - 4, centerY + scale * 2); j++) {
+                        if (Main.tile[i, j].HasTile && !protectedTiles.Contains(Main.tile[i, j].TileType)) {
                             double x = (centerX - i) / (double)scale * Math.Cos(rot) - (centerY - j) / (double)scale * Math.Sin(rot);
                             double y = (centerY - j) / (double)scale * Math.Cos(rot) + (centerX - i) / (double)scale * Math.Sin(rot);
 
-                            for (int iterations = 0; iterations < 10; iterations++)
-                            {
+                            for (int iterations = 0; iterations < 10; iterations++) {
                                 double newX = x * x - y * y + varX;
                                 double newY = 2 * x * y + varY;
                                 x = newX;
                                 y = newY;
 
-                                if (x * x + y * y > 4)
-                                {
+                                if (x * x + y * y > 4) {
                                     break;
                                 }
                             }
-                            if (x * x + y * y < 4)
-                            {
+                            if (x * x + y * y < 4) {
                                 Tile tile = Framing.GetTileSafely(i, j);
 
                                 tile.TileType = (ushort)TileType<LightslateTile>();
 
                                 if ((!Framing.GetTileSafely(i, j + 1).HasTile || protectedTiles.Contains(Framing.GetTileSafely(i, j + 1).TileType)) ||
                                     ((!Framing.GetTileSafely(i, j + 2).HasTile || protectedTiles.Contains(Framing.GetTileSafely(i, j + 2).TileType)) && WorldGen.genRand.NextBool(2)) ||
-                                    ((!Framing.GetTileSafely(i, j + 3).HasTile || protectedTiles.Contains(Framing.GetTileSafely(i, j + 3).TileType)) && WorldGen.genRand.NextBool(3)))
-                                {
+                                    ((!Framing.GetTileSafely(i, j + 3).HasTile || protectedTiles.Contains(Framing.GetTileSafely(i, j + 3).TileType)) && WorldGen.genRand.NextBool(3))) {
                                     tile.TileType = (ushort)TileType<FractalMatterTile>();
                                 }
                             }
@@ -1325,19 +1210,16 @@ namespace Polarities
                 }
             }
 
-            for (int a = 0; a < NUM_FRACTAL_ORE_VEINS; a++)
-            {
+            for (int a = 0; a < NUM_FRACTAL_ORE_VEINS; a++) {
                 progress.Set(0.33f + a / (float)NUM_FRACTAL_ORE_VEINS / 3);
 
                 int centerX = 0;
                 int centerY = 0;
-                for (int tries = 0; tries < 256; tries++)
-                {
+                for (int tries = 0; tries < 256; tries++) {
                     centerX = WorldGen.genRand.Next(Main.maxTilesX);
                     centerY = WorldGen.genRand.Next(Main.maxTilesY);
 
-                    if (Main.tile[centerX, centerY].HasTile)
-                    {
+                    if (Main.tile[centerX, centerY].HasTile) {
                         break;
                     }
                 }
@@ -1353,29 +1235,23 @@ namespace Polarities
                 float varX = vars.X;
                 float varY = vars.Y;
 
-                for (int i = Math.Max(0, centerX - scale * 2); i <= Math.Min(Main.maxTilesX - 1, centerX + scale * 2); i++)
-                {
-                    for (int j = Math.Max(0, centerY - scale * 2); j <= Math.Min(Main.maxTilesY - 1, centerY + scale * 2); j++)
-                    {
-                        if (Main.tile[i, j].HasTile && !protectedTiles.Contains(Main.tile[i, j].TileType))
-                        {
+                for (int i = Math.Max(0, centerX - scale * 2); i <= Math.Min(Main.maxTilesX - 1, centerX + scale * 2); i++) {
+                    for (int j = Math.Max(0, centerY - scale * 2); j <= Math.Min(Main.maxTilesY - 1, centerY + scale * 2); j++) {
+                        if (Main.tile[i, j].HasTile && !protectedTiles.Contains(Main.tile[i, j].TileType)) {
                             double x = (centerX - i) / (double)scale * Math.Cos(rot) - (centerY - j) / (double)scale * Math.Sin(rot);
                             double y = (centerY - j) / (double)scale * Math.Cos(rot) + (centerX - i) / (double)scale * Math.Sin(rot);
 
-                            for (int iterations = 0; iterations < 10; iterations++)
-                            {
+                            for (int iterations = 0; iterations < 10; iterations++) {
                                 double newX = x * x - y * y + varX;
                                 double newY = 2 * x * y + varY;
                                 x = newX;
                                 y = newY;
 
-                                if (x * x + y * y > 4)
-                                {
+                                if (x * x + y * y > 4) {
                                     break;
                                 }
                             }
-                            if (x * x + y * y < 4)
-                            {
+                            if (x * x + y * y < 4) {
                                 WorldGen.PlaceTile(i, j, TileType<FractalOreTile>(), mute: true, forced: true);
                             }
                         }
@@ -1383,19 +1259,16 @@ namespace Polarities
                 }
             }
 
-            for (int a = 0; a < NUM_DENDRITIC_ORE_VEINS; a++)
-            {
+            for (int a = 0; a < NUM_DENDRITIC_ORE_VEINS; a++) {
                 progress.Set(0.66f + a / (float)NUM_DENDRITIC_ORE_VEINS / 3);
 
                 int centerX = 0;
                 int centerY = 0;
-                for (int tries = 0; tries < 256; tries++)
-                {
+                for (int tries = 0; tries < 256; tries++) {
                     centerX = WorldGen.genRand.Next(Main.maxTilesX);
                     centerY = WorldGen.genRand.Next(skyHeight);
 
-                    if (!Main.tile[centerX, centerY].HasTile)
-                    {
+                    if (!Main.tile[centerX, centerY].HasTile) {
                         break;
                     }
                 }
@@ -1425,29 +1298,23 @@ namespace Polarities
                 float varX = vars.X;
                 float varY = vars.Y;
 
-                for (int i = Math.Max(0, centerX - scale * 2); i <= Math.Min(Main.maxTilesX - 1, centerX + scale * 2); i++)
-                {
-                    for (int j = Math.Max(0, centerY - scale * 2); j <= Math.Min(Main.maxTilesY - 1, centerY + scale * 2); j++)
-                    {
-                        if (!Main.tile[i, j].HasTile)
-                        {
+                for (int i = Math.Max(0, centerX - scale * 2); i <= Math.Min(Main.maxTilesX - 1, centerX + scale * 2); i++) {
+                    for (int j = Math.Max(0, centerY - scale * 2); j <= Math.Min(Main.maxTilesY - 1, centerY + scale * 2); j++) {
+                        if (!Main.tile[i, j].HasTile) {
                             double x = (centerX - i) / (double)scale * Math.Cos(rot) - (centerY - j) / (double)scale * Math.Sin(rot);
                             double y = (centerY - j) / (double)scale * Math.Cos(rot) + (centerX - i) / (double)scale * Math.Sin(rot);
 
-                            for (int iterations = 0; iterations < 10; iterations++)
-                            {
+                            for (int iterations = 0; iterations < 10; iterations++) {
                                 double newX = x * x - y * y + varX;
                                 double newY = 2 * x * y + varY;
                                 x = newX;
                                 y = newY;
 
-                                if (x * x + y * y > 4)
-                                {
+                                if (x * x + y * y > 4) {
                                     break;
                                 }
                             }
-                            if (x * x + y * y < 4)
-                            {
+                            if (x * x + y * y < 4) {
                                 WorldGen.PlaceTile(i, j, TileType<DendriticEnergyTile>(), mute: true, forced: true);
                             }
                         }
@@ -1456,8 +1323,7 @@ namespace Polarities
             }
         }
 
-        private void SentinelCavesGenpass(GenerationProgress progress)
-        {
+        private void SentinelCavesGenpass(GenerationProgress progress) {
             progress.Message = "Generating suspicious caves";
 
             //PolaritiesSystem.sentinelCaves = new List<Vector2>();
@@ -1472,8 +1338,7 @@ namespace Polarities
             //}
         }
 
-        private void SentinelVeinsGenpass(GenerationProgress progress)
-        {
+        private void SentinelVeinsGenpass(GenerationProgress progress) {
             progress.Message = "Generating suspicious ore";
 
             //for (int c = 0; c < PolaritiesSystem.sentinelCaves.Count; c++)
@@ -1484,14 +1349,11 @@ namespace Polarities
             //}
         }
 
-        private void FractalTrapsGenpass(GenerationProgress progress)
-        {
+        private void FractalTrapsGenpass(GenerationProgress progress) {
             progress.Message = "Generating traps";
 
-            for (int i = 10; i < Main.maxTilesX - 10; i++)
-            {
-                for (int j = 10; j < Main.maxTilesY - 10; j++)
-                {
+            for (int i = 10; i < Main.maxTilesX - 10; i++) {
+                for (int j = 10; j < Main.maxTilesY - 10; j++) {
                     progress.Set((i - 10) / (float)(Main.maxTilesX - 20) + (j - 10) / (float)((Main.maxTilesX - 20) * (Main.maxTilesY - 20)));
 
                     if (!Framing.GetTileSafely(i, j).HasTile &&
@@ -1506,26 +1368,19 @@ namespace Polarities
                         Framing.GetTileSafely(i, j + 1).HasTile &&
                         Main.tileSolid[Framing.GetTileSafely(i, j + 1).TileType] &&
                         !protectedTiles.Contains(Framing.GetTileSafely(i, j + 1).TileType) &&
-                        Framing.GetTileSafely(i, j).WallType != 0)
-                    {
-                        if (WorldGen.genRand.NextBool(64))
-                        {
+                        Framing.GetTileSafely(i, j).WallType != 0) {
+                        if (WorldGen.genRand.NextBool(64)) {
                             int numSpaces = 0;
                             int maxNumSpaces = 0;
-                            switch (WorldGen.genRand.Next(3))
-                            {
-                                case 0:
-                                    {
-                                        while (!Framing.GetTileSafely(i + maxNumSpaces, j - 1).HasTile || !Main.tileSolid[Framing.GetTileSafely(i + maxNumSpaces, j - 1).TileType])
-                                        {
+                            switch (WorldGen.genRand.Next(3)) {
+                                case 0: {
+                                        while (!Framing.GetTileSafely(i + maxNumSpaces, j - 1).HasTile || !Main.tileSolid[Framing.GetTileSafely(i + maxNumSpaces, j - 1).TileType]) {
                                             maxNumSpaces++;
-                                            if (i + maxNumSpaces > Main.maxTilesX - 10 || maxNumSpaces >= 100)
-                                            {
+                                            if (i + maxNumSpaces > Main.maxTilesX - 10 || maxNumSpaces >= 100) {
                                                 break;
                                             }
                                         }
-                                        if (protectedTiles.Contains(Main.tile[i + maxNumSpaces, j - 1].TileType) || maxNumSpaces >= 100)
-                                        {
+                                        if (protectedTiles.Contains(Main.tile[i + maxNumSpaces, j - 1].TileType) || maxNumSpaces >= 100) {
                                             break;
                                         }
                                         WorldGen.PlaceTile(i, j, 135, mute: true, true, -1, 4);
@@ -1535,18 +1390,15 @@ namespace Polarities
                                         tile.RedWire = true;
                                         tileAbove.RedWire = true;
                                         //left-facing
-                                        while (!Framing.GetTileSafely(i + numSpaces, j - 1).HasTile || !Main.tileSolid[Framing.GetTileSafely(i + numSpaces, j - 1).TileType])
-                                        {
+                                        while (!Framing.GetTileSafely(i + numSpaces, j - 1).HasTile || !Main.tileSolid[Framing.GetTileSafely(i + numSpaces, j - 1).TileType]) {
                                             numSpaces++;
-                                            if (i + numSpaces > Main.maxTilesX - 10)
-                                            {
+                                            if (i + numSpaces > Main.maxTilesX - 10) {
                                                 break;
                                             }
                                             tile = Main.tile[i + numSpaces, j - 1];
                                             tile.RedWire = true;
                                         }
-                                        if (i + numSpaces <= Main.maxTilesX - 10)
-                                        {
+                                        if (i + numSpaces <= Main.maxTilesX - 10) {
                                             tile = Main.tile[i + numSpaces, j - 1];
                                             tile.HasTile = true;
                                             tile.TileType = (ushort)TileType<FractalTrap>();
@@ -1554,25 +1406,20 @@ namespace Polarities
                                             tile.TileFrameY = 0;
                                             tile.IsHalfBlock = false;
                                             tile.Slope = 0;
-                                            if (WorldGen.genRand.NextBool())
-                                            {
+                                            if (WorldGen.genRand.NextBool()) {
                                                 Main.tile[i + numSpaces, j - 1].TileFrameY = 18;
                                             }
                                         }
                                     }
                                     break;
-                                case 1:
-                                    {
-                                        while (!Framing.GetTileSafely(i - maxNumSpaces, j - 1).HasTile || !Main.tileSolid[Framing.GetTileSafely(i - maxNumSpaces, j - 1).TileType])
-                                        {
+                                case 1: {
+                                        while (!Framing.GetTileSafely(i - maxNumSpaces, j - 1).HasTile || !Main.tileSolid[Framing.GetTileSafely(i - maxNumSpaces, j - 1).TileType]) {
                                             maxNumSpaces++;
-                                            if (i - maxNumSpaces < 10 || maxNumSpaces >= 100)
-                                            {
+                                            if (i - maxNumSpaces < 10 || maxNumSpaces >= 100) {
                                                 break;
                                             }
                                         }
-                                        if (protectedTiles.Contains(Main.tile[i - maxNumSpaces, j - 1].TileType) || maxNumSpaces >= 100)
-                                        {
+                                        if (protectedTiles.Contains(Main.tile[i - maxNumSpaces, j - 1].TileType) || maxNumSpaces >= 100) {
                                             break;
                                         }
                                         WorldGen.PlaceTile(i, j, 135, mute: true, true, -1, 4);
@@ -1582,18 +1429,15 @@ namespace Polarities
                                         tile.BlueWire = true;
                                         tileAbove.BlueWire = true;
                                         //right-facing
-                                        while (!Framing.GetTileSafely(i - numSpaces, j - 1).HasTile || !Main.tileSolid[Framing.GetTileSafely(i - numSpaces, j - 1).TileType])
-                                        {
+                                        while (!Framing.GetTileSafely(i - numSpaces, j - 1).HasTile || !Main.tileSolid[Framing.GetTileSafely(i - numSpaces, j - 1).TileType]) {
                                             numSpaces++;
-                                            if (i - numSpaces < 10)
-                                            {
+                                            if (i - numSpaces < 10) {
                                                 break;
                                             }
                                             tile = Main.tile[i - numSpaces, j - 1];
                                             tile.BlueWire = true;
                                         }
-                                        if (i - numSpaces >= 10)
-                                        {
+                                        if (i - numSpaces >= 10) {
                                             tile = Main.tile[i - numSpaces, j - 1];
                                             tile.HasTile = true;
                                             tile.TileType = (ushort)TileType<FractalTrap>();
@@ -1601,25 +1445,20 @@ namespace Polarities
                                             tile.TileFrameY = 0;
                                             tile.IsHalfBlock = false;
                                             tile.Slope = 0;
-                                            if (WorldGen.genRand.NextBool())
-                                            {
+                                            if (WorldGen.genRand.NextBool()) {
                                                 Main.tile[i - numSpaces, j - 1].TileFrameY = 18;
                                             }
                                         }
                                     }
                                     break;
-                                case 2:
-                                    {
-                                        while (!Framing.GetTileSafely(i, j - 1 - maxNumSpaces).HasTile || !Main.tileSolid[Framing.GetTileSafely(i, j - 1 - maxNumSpaces).TileType])
-                                        {
+                                case 2: {
+                                        while (!Framing.GetTileSafely(i, j - 1 - maxNumSpaces).HasTile || !Main.tileSolid[Framing.GetTileSafely(i, j - 1 - maxNumSpaces).TileType]) {
                                             maxNumSpaces++;
-                                            if (j - 1 - maxNumSpaces < 10 || maxNumSpaces >= 100)
-                                            {
+                                            if (j - 1 - maxNumSpaces < 10 || maxNumSpaces >= 100) {
                                                 break;
                                             }
                                         }
-                                        if (protectedTiles.Contains(Main.tile[i, j - 1 - maxNumSpaces].TileType) || maxNumSpaces >= 100)
-                                        {
+                                        if (protectedTiles.Contains(Main.tile[i, j - 1 - maxNumSpaces].TileType) || maxNumSpaces >= 100) {
                                             break;
                                         }
                                         WorldGen.PlaceTile(i, j, 135, mute: true, true, -1, 4);
@@ -1629,18 +1468,15 @@ namespace Polarities
                                         tile.GreenWire = true;
                                         tileAbove.GreenWire = true;
                                         //down-facing
-                                        while (!Framing.GetTileSafely(i, j - 1 - numSpaces).HasTile || !Main.tileSolid[Framing.GetTileSafely(i, j - 1 - numSpaces).TileType])
-                                        {
+                                        while (!Framing.GetTileSafely(i, j - 1 - numSpaces).HasTile || !Main.tileSolid[Framing.GetTileSafely(i, j - 1 - numSpaces).TileType]) {
                                             numSpaces++;
-                                            if (j - 1 - numSpaces < 10)
-                                            {
+                                            if (j - 1 - numSpaces < 10) {
                                                 break;
                                             }
                                             tile = Main.tile[i, j - 1 - numSpaces];
                                             tile.GreenWire = true;
                                         }
-                                        if (j - 1 - numSpaces >= 10)
-                                        {
+                                        if (j - 1 - numSpaces >= 10) {
                                             tile = Main.tile[i, j - 1 - numSpaces];
                                             tile.HasTile = true;
                                             tile.TileType = (ushort)TileType<FractalTrap>();
@@ -1648,8 +1484,7 @@ namespace Polarities
                                             tile.TileFrameY = 0;
                                             tile.IsHalfBlock = false;
                                             tile.Slope = 0;
-                                            if (WorldGen.genRand.NextBool())
-                                            {
+                                            if (WorldGen.genRand.NextBool()) {
                                                 Main.tile[i, j - 1 - numSpaces].TileFrameY = 18;
                                             }
                                         }
@@ -1662,14 +1497,11 @@ namespace Polarities
             }
         }
 
-        private void FractalPlantsGenpass(GenerationProgress progress)
-        {
+        private void FractalPlantsGenpass(GenerationProgress progress) {
             progress.Message = "Growing fractal trees";
 
-            for (int i = 10; i < Main.maxTilesX - 10; i++)
-            {
-                for (int j = Main.maxTilesY / 4; j < Main.maxTilesY - 10; j++)
-                {
+            for (int i = 10; i < Main.maxTilesX - 10; i++) {
+                for (int j = Main.maxTilesY / 4; j < Main.maxTilesY - 10; j++) {
                     progress.Set(((i - 10) * (j - Main.maxTilesY / 4)) / ((Main.maxTilesY * 0.75f - 10) * (Main.maxTilesX - 20)));
 
                     WorldGen.GrowTree(i, j);
@@ -1678,10 +1510,8 @@ namespace Polarities
 
             List<Point> fractusHeads = new List<Point>();
 
-            for (int x = 50; x < Main.maxTilesX - 50; x++)
-            {
-                for (int y = Main.maxTilesY / 2; y < Main.maxTilesY - 50; y++)
-                {
+            for (int x = 50; x < Main.maxTilesX - 50; x++) {
+                for (int y = Main.maxTilesY / 2; y < Main.maxTilesY - 50; y++) {
                     if (!IsFractalOcean(x, y) && WorldGen.genRand.NextBool(100) &&
                         Main.tile[x, y + 1].TileType == TileType<FractalDustTile>() && Main.tile[x, y + 1].HasTile &&
                         !Main.tile[x, y].HasTile && Main.tile[x, y].LiquidAmount == 0 &&
@@ -1689,8 +1519,7 @@ namespace Polarities
                         !Main.tile[x - 1, y - 1].HasTile &&
                         !Main.tile[x + 1, y - 1].HasTile &&
                         !Main.tile[x, y - 2].HasTile
-                        )
-                    {
+                        ) {
                         WorldGen.PlaceTile(x, y, TileType<FractusBase>(), mute: true);
                         fractusHeads.Add(new Point(x, y));
                     }
@@ -1699,67 +1528,50 @@ namespace Polarities
 
             FractusHelper.QuickGrowFractus(fractusHeads);
 
-            for (int x = 10; x < Main.maxTilesX - 10; x++)
-            {
-                for (int y = 10; y < Main.maxTilesY - 10; y++)
-                {
+            for (int x = 10; x < Main.maxTilesX - 10; x++) {
+                for (int y = 10; y < Main.maxTilesY - 10; y++) {
                     if (IsFractalOcean(x, y) && WorldGen.genRand.NextBool(75) &&
                         !Main.tile[x, y].HasTile &&
                         Main.tile[x, y + 1].HasTile && (Main.tile[x, y + 1].TileType == (ushort)TileType<FractalDuststoneTile>() || Main.tile[x, y + 1].TileType == (ushort)TileType<FractalDustTile>())
-                        )
-                    {
+                        ) {
                         WorldGen.PlaceTile(x, y, TileType<StromatolightTile>(), mute: true, style: WorldGen.genRand.Next(4));
                     }
                 }
             }
         }
 
-        private void HyphaeGenpass(GenerationProgress progress)
-        {
+        private void HyphaeGenpass(GenerationProgress progress) {
             progress.Message = "Growing hyphae";
 
-            for (int x = 1; x < Main.maxTilesX - 1; x++)
-            {
-                for (int y = Main.maxTilesY / 2; y < Main.maxTilesY - 1; y++)
-                {
+            for (int x = 1; x < Main.maxTilesX - 1; x++) {
+                for (int y = Main.maxTilesY / 2; y < Main.maxTilesY - 1; y++) {
                     Tile tile = Framing.GetTileSafely(x, y);
-                    if (tile.WallType != 0 && tile.HasTile)
-                    {
+                    if (tile.WallType != 0 && tile.HasTile) {
                         bool tileFree = false;
-                        for (int i = x - 1; i < x + 2; i++)
-                        {
-                            for (int j = y - 1; j < y + 2; j++)
-                            {
-                                if (!Main.tile[i, j].HasTile || !Main.tileSolid[Main.tile[i, j].TileType])
-                                {
+                        for (int i = x - 1; i < x + 2; i++) {
+                            for (int j = y - 1; j < y + 2; j++) {
+                                if (!Main.tile[i, j].HasTile || !Main.tileSolid[Main.tile[i, j].TileType]) {
                                     tileFree = true;
                                 }
                             }
                         }
 
-                        if (tileFree)
-                        {
+                        if (tileFree) {
                             int spread = 1000;
 
                             //chances are higher for the less common tile types
-                            if (tile.TileType == (ushort)TileType<FractalMatterTile>())
-                            {
-                                if (WorldGen.genRand.NextBool(800))
-                                {
+                            if (tile.TileType == (ushort)TileType<FractalMatterTile>()) {
+                                if (WorldGen.genRand.NextBool(800)) {
                                     Tiles.Hyphae.SpreadCustomGrass(x, y, TileType<FractalMatterTile>(), TileType<Tiles.HyphaeFractalMatter>(), spread, spreadFilaments: true);
                                 }
                             }
-                            else if (tile.TileType == (ushort)TileType<FractalStrandsTile>())
-                            {
-                                if (WorldGen.genRand.NextBool(200))
-                                {
+                            else if (tile.TileType == (ushort)TileType<FractalStrandsTile>()) {
+                                if (WorldGen.genRand.NextBool(200)) {
                                     Tiles.Hyphae.SpreadCustomGrass(x, y, TileType<FractalStrandsTile>(), TileType<Tiles.HyphaeFractalStrands>(), spread, spreadFilaments: true);
                                 }
                             }
-                            else if (tile.TileType == (ushort)TileType<FractalDuststoneTile>())
-                            {
-                                if (WorldGen.genRand.NextBool(100))
-                                {
+                            else if (tile.TileType == (ushort)TileType<FractalDuststoneTile>()) {
+                                if (WorldGen.genRand.NextBool(100)) {
                                     Tiles.Hyphae.SpreadCustomGrass(x, y, TileType<FractalDuststoneTile>(), TileType<Tiles.HyphaeFractalDuststone>(), spread, spreadFilaments: true);
                                 }
                             }
@@ -1769,16 +1581,13 @@ namespace Polarities
             }
         }
 
-        private void FractalChestsGenpass(GenerationProgress progress)
-        {
+        private void FractalChestsGenpass(GenerationProgress progress) {
             progress.Message = "Generating loot chests";
 
             ResetFractalChestData();
 
-            for (int i = 30; i < Main.maxTilesX - 30; i++)
-            {
-                for (int j = 30; j < Main.maxTilesY - 30; j++)
-                {
+            for (int i = 30; i < Main.maxTilesX - 30; i++) {
+                for (int j = 30; j < Main.maxTilesY - 30; j++) {
                     progress.Set(i * j / (float)((Main.maxTilesX - 20) * (Main.maxTilesY - 20)));
 
                     //loot chests
@@ -1789,16 +1598,12 @@ namespace Polarities
                     !Framing.GetTileSafely(i + 1, j + 1).HasTile &&
                     Framing.GetTileSafely(i, j + 2).HasTile &&
                     Framing.GetTileSafely(i + 1, j + 2).HasTile &&
-                    WorldGen.genRand.NextBool(96))
-                    {
+                    WorldGen.genRand.NextBool(96)) {
                         //don't generate intersecting protected tiles
                         bool safeSpot = true;
-                        for (int x = i - 3; x < i + 5; x++)
-                        {
-                            for (int y = j - 5; y < j + 4; y++)
-                            {
-                                if (protectedTiles.Contains(Main.tile[x, y].TileType) && Main.tile[x, y].HasTile)
-                                {
+                        for (int x = i - 3; x < i + 5; x++) {
+                            for (int y = j - 5; y < j + 4; y++) {
+                                if (protectedTiles.Contains(Main.tile[x, y].TileType) && Main.tile[x, y].HasTile) {
                                     safeSpot = false;
                                     break;
                                 }
@@ -1812,8 +1617,7 @@ namespace Polarities
                         GenFractalLootChest(i, j);
 
                         //try to shrine
-                        if (genShrine)
-                        {
+                        if (genShrine) {
                             int[,] shrineTiles = {
                                 { 0, 1, 1, 1, 1, 1, 1, 0 },
                                 { 1, 1, 0, 1, 1, 0, 1, 1 },
@@ -1838,24 +1642,19 @@ namespace Polarities
                             };
 
                             //generate shrine
-                            for (int x = 0; x < 8; x++)
-                            {
-                                for (int y = 0; y < 9; y++)
-                                {
+                            for (int x = 0; x < 8; x++) {
+                                for (int y = 0; y < 9; y++) {
                                     int realX = (i - 3) + x;
                                     int realY = (j - 5) + y;
 
-                                    if (shrineTiles[y, x] == 1)
-                                    {
+                                    if (shrineTiles[y, x] == 1) {
                                         Framing.GetTileSafely(realX, realY).HasTile = true;
                                         Framing.GetTileSafely(realX, realY).TileType = (ushort)TileType<FractalBrickTile>();
                                     }
-                                    else if (shrineTiles[y, x] == 0)
-                                    {
+                                    else if (shrineTiles[y, x] == 0) {
                                         Framing.GetTileSafely(realX, realY).HasTile = false;
                                     }
-                                    if (wallTiles[y, x] == 1)
-                                    {
+                                    if (wallTiles[y, x] == 1) {
                                         Framing.GetTileSafely(realX, realY).WallType = (ushort)WallType<FractalBrickWallPlaced>();
                                     }
                                 }
@@ -1868,40 +1667,30 @@ namespace Polarities
             }
         }
 
-        private void FractalHousesGenpass(GenerationProgress progress)
-        {
+        private void FractalHousesGenpass(GenerationProgress progress) {
             progress.Message = "Generating fractal cabins";
 
-            for (int i = 30; i < Main.maxTilesX - 30; i++)
-            {
-                for (int j = 30; j < Main.maxTilesY - 30; j++)
-                {
+            for (int i = 30; i < Main.maxTilesX - 30; i++) {
+                for (int j = 30; j < Main.maxTilesY - 30; j++) {
                     progress.Set(i / (float)(Main.maxTilesX - 60) + j / (float)((Main.maxTilesX - 60) * (Main.maxTilesY - 60)));
 
-                    if (!Framing.GetTileSafely(i, j).HasTile && Framing.GetTileSafely(i, j + 1).HasTile && WorldGen.genRand.NextBool(2048))
-                    {
+                    if (!Framing.GetTileSafely(i, j).HasTile && Framing.GetTileSafely(i, j + 1).HasTile && WorldGen.genRand.NextBool(2048)) {
                         GenHouse(i, j);
                     }
                 }
             }
         }
 
-        private void StabilizeGenpass(GenerationProgress progress)
-        {
+        private void StabilizeGenpass(GenerationProgress progress) {
             progress.Message = "Stabilizing";
 
-            for (int k = 0; k < Main.maxTilesX; k++)
-            {
-                for (int l = 0; l < Main.maxTilesY; l++)
-                {
-                    if (Main.tile[k, l].HasTile && !WorldGen.SolidTile(k, l + 1))
-                    {
-                        if (Main.tile[k, l].TileType == TileType<LightslateTile>())
-                        {
+            for (int k = 0; k < Main.maxTilesX; k++) {
+                for (int l = 0; l < Main.maxTilesY; l++) {
+                    if (Main.tile[k, l].HasTile && !WorldGen.SolidTile(k, l + 1)) {
+                        if (Main.tile[k, l].TileType == TileType<LightslateTile>()) {
                             Main.tile[k, l].TileType = (ushort)TileType<FractalMatterTile>();
                         }
-                        if (Main.tile[k, l].TileType == TileType<FractalDustTile>())
-                        {
+                        if (Main.tile[k, l].TileType == TileType<FractalDustTile>()) {
                             Main.tile[k, l].TileType = (ushort)TileType<FractalDuststoneTile>();
                         }
                     }
@@ -1911,8 +1700,7 @@ namespace Polarities
 
 
 
-        private static void TryGenSentinelCave()
-        {
+        private static void TryGenSentinelCave() {
             //const float ARENA_RADIUS = NPCs.SelfsimilarSentinel.SelfsimilarSentinel.ARENA_RADIUS;
 
             //Vector2 cavePosition = new Vector2(WorldGen.genRand.NextFloat(3 * ARENA_RADIUS, Main.maxTilesX * 16 - 3 * ARENA_RADIUS), WorldGen.genRand.NextFloat(3 * ARENA_RADIUS, Main.maxTilesY * 16 - 3 * ARENA_RADIUS));
@@ -1992,8 +1780,7 @@ namespace Polarities
             //}
         }
 
-        private static void GenSentinelVein(Vector2 cavePosition, Vector2 vars, double rot, bool onlyGenVein = false)
-        {
+        private static void GenSentinelVein(Vector2 cavePosition, Vector2 vars, double rot, bool onlyGenVein = false) {
             //actually generate the thing
 
             //const float ARENA_RADIUS = NPCs.SelfsimilarSentinel.SelfsimilarSentinel.ARENA_RADIUS;
@@ -2151,8 +1938,7 @@ namespace Polarities
         }
 
 
-        public static void GenHouse(int x, int y)
-        {
+        public static void GenHouse(int x, int y) {
             const int minSize = 7;
             const int maxSize = 14;
 
@@ -2165,48 +1951,37 @@ namespace Polarities
             ModLoader.GetMod("Polarities").Logger.Debug("HouseA");
 
             Rectangle roomsHull;
-            void GetRoomsHull()
-            {
+            void GetRoomsHull() {
                 //get the hull of the rooms, every time we add a new room we need to preserve this
                 roomsHull = new Rectangle(rooms[0].X, rooms[0].Y, rooms[0].Width, rooms[0].Height);
-                foreach (Rectangle room in rooms)
-                {
-                    if (room.X < roomsHull.X)
-                    {
+                foreach (Rectangle room in rooms) {
+                    if (room.X < roomsHull.X) {
                         roomsHull.Width += roomsHull.X - room.X;
                         roomsHull.X = room.X;
                     }
-                    if (room.X + room.Width > roomsHull.X + roomsHull.Width)
-                    {
+                    if (room.X + room.Width > roomsHull.X + roomsHull.Width) {
                         roomsHull.Width = room.X + room.Width - roomsHull.X;
                     }
 
-                    if (room.Y < roomsHull.Y)
-                    {
+                    if (room.Y < roomsHull.Y) {
                         roomsHull.Height += roomsHull.Y - room.Y;
                         roomsHull.Y = room.Y;
                     }
-                    if (room.Y + room.Height > roomsHull.Y + roomsHull.Height)
-                    {
+                    if (room.Y + room.Height > roomsHull.Y + roomsHull.Height) {
                         roomsHull.Height = room.Y + room.Height - roomsHull.Y;
                     }
                 }
             }
 
-            bool RoomValid(Rectangle newRoom, ref bool failure, bool movingVertical = false)
-            {
+            bool RoomValid(Rectangle newRoom, ref bool failure, bool movingVertical = false) {
                 failure = true;
                 bool output = true;
-                foreach (Rectangle room in rooms)
-                {
-                    if (room.Intersects(newRoom))
-                    {
-                        if (movingVertical)
-                        {
+                foreach (Rectangle room in rooms) {
+                    if (room.Intersects(newRoom)) {
+                        if (movingVertical) {
                             failure = failure && !new Rectangle(room.X + 3, room.Y, room.Width - 6, room.Height).Intersects(newRoom);
                         }
-                        else
-                        {
+                        else {
                             failure = failure && !new Rectangle(room.X, room.Y + 3, room.Width, room.Height - 6).Intersects(newRoom);
                         }
 
@@ -2219,8 +1994,7 @@ namespace Polarities
 
             int numExtraRooms = WorldGen.genRand.Next(1, 5) + WorldGen.genRand.Next(1, 5);
             int roomTries = 0;
-            for (int i = 0; i < numExtraRooms && roomTries < 100; i++)
-            {
+            for (int i = 0; i < numExtraRooms && roomTries < 100; i++) {
                 //we can't do more than 100 attempts to prevent getting stuck
                 roomTries++;
 
@@ -2228,15 +2002,13 @@ namespace Polarities
                 //add a room
                 Rectangle newRoom = new Rectangle(0, 0, WorldGen.genRand.Next(minSize, maxSize), WorldGen.genRand.Next(minSize, maxSize));
                 bool failure = false;
-                switch (WorldGen.genRand.Next(4))
-                {
+                switch (WorldGen.genRand.Next(4)) {
                     case 0:
                         newRoom.X = roomsHull.X - newRoom.Width;
                         newRoom.Y = WorldGen.genRand.Next(roomsHull.Y - newRoom.Height + 4, roomsHull.Y + roomsHull.Height - 3);
 
                         int tries = 0;
-                        while (RoomValid(newRoom, ref failure) && tries < roomsHull.Width)
-                        {
+                        while (RoomValid(newRoom, ref failure) && tries < roomsHull.Width) {
                             newRoom.X++;
                             tries++;
                         }
@@ -2247,8 +2019,7 @@ namespace Polarities
                         newRoom.Y = WorldGen.genRand.Next(roomsHull.Y - newRoom.Height + 4, roomsHull.Y + roomsHull.Height - 3);
 
                         tries = 0;
-                        while (RoomValid(newRoom, ref failure) && tries < roomsHull.Width)
-                        {
+                        while (RoomValid(newRoom, ref failure) && tries < roomsHull.Width) {
                             newRoom.X--;
                             tries++;
                         }
@@ -2259,8 +2030,7 @@ namespace Polarities
                         newRoom.X = WorldGen.genRand.Next(roomsHull.X - newRoom.Width + 4, roomsHull.X + roomsHull.Width - 3);
 
                         tries = 0;
-                        while (RoomValid(newRoom, ref failure, true) && tries < roomsHull.Height)
-                        {
+                        while (RoomValid(newRoom, ref failure, true) && tries < roomsHull.Height) {
                             newRoom.Y++;
                             tries++;
                         }
@@ -2271,20 +2041,17 @@ namespace Polarities
                         newRoom.X = WorldGen.genRand.Next(roomsHull.X - newRoom.Width + 4, roomsHull.X + roomsHull.Width - 3);
 
                         tries = 0;
-                        while (RoomValid(newRoom, ref failure, true) && tries < roomsHull.Height)
-                        {
+                        while (RoomValid(newRoom, ref failure, true) && tries < roomsHull.Height) {
                             newRoom.Y--;
                             tries++;
                         }
                         newRoom.Y++;
                         break;
                 }
-                if (!failure)
-                {
+                if (!failure) {
                     rooms.Add(newRoom);
                 }
-                else
-                {
+                else {
                     i--;
                 }
             }
@@ -2296,14 +2063,10 @@ namespace Polarities
 
             ModLoader.GetMod("Polarities").Logger.Debug("HouseD");
             //stop if we're intersecting the outside or a protected tile or a container
-            foreach (Rectangle room in rooms)
-            {
-                for (int i = 0; i <= room.Width; i++)
-                {
-                    for (int j = 0; j <= room.Height; j++)
-                    {
-                        if (Framing.GetTileSafely(room.X + i, room.Y + j).WallType == 0 || (protectedTiles.Contains(Framing.GetTileSafely(room.X + i, room.Y + j).TileType) && Framing.GetTileSafely(room.X + i, room.Y + j).HasTile) || Main.tileContainer[Framing.GetTileSafely(room.X + i, room.Y + j).TileType])
-                        {
+            foreach (Rectangle room in rooms) {
+                for (int i = 0; i <= room.Width; i++) {
+                    for (int j = 0; j <= room.Height; j++) {
+                        if (Framing.GetTileSafely(room.X + i, room.Y + j).WallType == 0 || (protectedTiles.Contains(Framing.GetTileSafely(room.X + i, room.Y + j).TileType) && Framing.GetTileSafely(room.X + i, room.Y + j).HasTile) || Main.tileContainer[Framing.GetTileSafely(room.X + i, room.Y + j).TileType]) {
                             return;
                         }
                     }
@@ -2311,24 +2074,19 @@ namespace Polarities
             }
             ModLoader.GetMod("Polarities").Logger.Debug("HouseE");
 
-            void FillRoom(Rectangle room)
-            {
-                for (int i = 0; i <= room.Width; i++)
-                {
-                    for (int j = 0; j <= room.Height; j++)
-                    {
+            void FillRoom(Rectangle room) {
+                for (int i = 0; i <= room.Width; i++) {
+                    for (int j = 0; j <= room.Height; j++) {
                         Framing.GetTileSafely(room.X + i, room.Y + j).HasTile = false;
                         Framing.GetTileSafely(room.X + i, room.Y + j).Slope = 0;
                         Framing.GetTileSafely(room.X + i, room.Y + j).IsHalfBlock = false;
-                        if (WorldGen.genRand.NextBool() && i > 0 && i < room.Width && j > 0 && j < room.Height)
-                        {
+                        if (WorldGen.genRand.NextBool() && i > 0 && i < room.Width && j > 0 && j < room.Height) {
                             Framing.GetTileSafely(room.X + i, room.Y + j).WallType = 0;
                             WorldGen.PlaceWall(room.X + i, room.Y + j, WallType<FractalBrickWallPlaced>(), true);
                         }
                     }
                 }
-                for (int i = 0; i <= room.Width; i++)
-                {
+                for (int i = 0; i <= room.Width; i++) {
                     Tile tile = Main.tile[room.X + i, room.Y];
                     tile.HasTile = true;
                     tile.IsHalfBlock = false;
@@ -2341,8 +2099,7 @@ namespace Polarities
                     tile.Slope = 0;
                     tile.TileType = (ushort)TileType<FractalBrickTile>();
                 }
-                for (int j = 0; j <= room.Height; j++)
-                {
+                for (int j = 0; j <= room.Height; j++) {
                     Tile tile = Main.tile[room.X, room.Y + j];
                     tile.HasTile = true;
                     tile.IsHalfBlock = false;
@@ -2357,8 +2114,7 @@ namespace Polarities
                 }
             }
 
-            foreach (Rectangle room in rooms)
-            {
+            foreach (Rectangle room in rooms) {
                 FillRoom(room);
             }
             ModLoader.GetMod("Polarities").Logger.Debug("HouseF");
@@ -2366,29 +2122,23 @@ namespace Polarities
             //keep track of what directions are available for doors
             //order is bottom, top, right, left
             Dictionary<Rectangle, bool[]> availabilities = new Dictionary<Rectangle, bool[]>();
-            foreach (Rectangle room in rooms)
-            {
+            foreach (Rectangle room in rooms) {
                 availabilities.Add(room, new bool[] { true, true, true, true });
             }
 
             ModLoader.GetMod("Polarities").Logger.Debug("HouseG");
             //for each room, find which rooms it's adjacent to, and create a door/platform between them
-            foreach (Rectangle room in rooms)
-            {
-                foreach (Rectangle room2 in rooms)
-                {
-                    if (room != room2)
-                    {
+            foreach (Rectangle room in rooms) {
+                foreach (Rectangle room2 in rooms) {
+                    if (room != room2) {
                         //rooms are different
-                        if (new Rectangle(room.X, room.Y, room.Width + 1, room.Height).Intersects(room2))
-                        {
+                        if (new Rectangle(room.X, room.Y, room.Width + 1, room.Height).Intersects(room2)) {
                             //rooms are bordering, room is to the left of room2
                             //add in a door
                             int minY = Math.Max(room.Y, room2.Y) + 3;
                             int maxY = Math.Min(room.Y + room.Height, room2.Y + room2.Height);
 
-                            if (minY < maxY)
-                            {
+                            if (minY < maxY) {
                                 int doorHeight = WorldGen.genRand.Next(minY, maxY);
                                 WorldGen.KillTile(room2.X, doorHeight, noItem: true);
                                 WorldGen.KillTile(room2.X, doorHeight - 1, noItem: true);
@@ -2399,15 +2149,13 @@ namespace Polarities
                             availabilities[room][2] = false;
                             availabilities[room2][3] = false;
                         }
-                        if (new Rectangle(room.X, room.Y, room.Width, room.Height + 1).Intersects(room2))
-                        {
+                        if (new Rectangle(room.X, room.Y, room.Width, room.Height + 1).Intersects(room2)) {
                             //rooms are bordering, room is above room2
                             //add in a platform
                             int minX = Math.Max(room.X, room2.X) + 3;
                             int maxX = Math.Min(room.X + room.Width, room2.X + room2.Width);
 
-                            if (minX < maxX)
-                            {
+                            if (minX < maxX) {
                                 int platformX = WorldGen.genRand.Next(minX, maxX);
                                 WorldGen.KillTile(platformX, room2.Y, noItem: true);
                                 WorldGen.KillTile(platformX - 1, room2.Y, noItem: true);
@@ -2426,10 +2174,8 @@ namespace Polarities
             ModLoader.GetMod("Polarities").Logger.Debug("HouseH");
 
             //doors/platforms to the exterior
-            foreach (Rectangle room in rooms)
-            {
-                if (availabilities[room][0])
-                {
+            foreach (Rectangle room in rooms) {
+                if (availabilities[room][0]) {
                     //bottom is available
                     int minX = room.X + 3;
                     int maxX = room.X + room.Width;
@@ -2442,8 +2188,7 @@ namespace Polarities
                     WorldGen.PlaceTile(platformX - 1, platformY, TileType<FractalPlatformTile>(), true, forced: true);
                     WorldGen.PlaceTile(platformX - 2, platformY, TileType<FractalPlatformTile>(), true, forced: true);
                 }
-                if (availabilities[room][1])
-                {
+                if (availabilities[room][1]) {
                     //top is available
                     int minX = room.X + 3;
                     int maxX = room.X + room.Width;
@@ -2456,8 +2201,7 @@ namespace Polarities
                     WorldGen.PlaceTile(platformX - 1, platformY, TileType<FractalPlatformTile>(), true, forced: true);
                     WorldGen.PlaceTile(platformX - 2, platformY, TileType<FractalPlatformTile>(), true, forced: true);
                 }
-                if (availabilities[room][2])
-                {
+                if (availabilities[room][2]) {
                     //right is available
                     int minY = room.Y + 3;
                     int maxY = room.Y + room.Height;
@@ -2468,8 +2212,7 @@ namespace Polarities
                     WorldGen.KillTile(doorX, doorY - 2, noItem: true);
                     WorldGen.PlaceObject(doorX, doorY - 1, ModContent.TileType<FractalDoorClosed>(), true);
                 }
-                if (availabilities[room][3])
-                {
+                if (availabilities[room][3]) {
                     //left is available
                     int minY = room.Y + 3;
                     int maxY = room.Y + room.Height;
@@ -2484,35 +2227,29 @@ namespace Polarities
             ModLoader.GetMod("Polarities").Logger.Debug("HouseI");
 
             //random stairways
-            foreach (Rectangle room in rooms)
-            {
-                if (WorldGen.genRand.NextBool())
-                {
+            foreach (Rectangle room in rooms) {
+                if (WorldGen.genRand.NextBool()) {
                     int stairwayX = WorldGen.genRand.Next(room.X + 2, room.X + room.Width);
                     int stairwayY = WorldGen.genRand.Next(room.Y + 2, room.Y + room.Height);
                     int stairwayDirection = WorldGen.genRand.NextBool() ? 1 : -1;
 
                     int slope = 2;
-                    if (stairwayDirection == 1)
-                    {
+                    if (stairwayDirection == 1) {
                         slope = 1;
                     }
 
-                    while (stairwayX > room.X && stairwayX < room.X + room.Width && stairwayY > room.Y && stairwayY < room.Y + room.Height)
-                    {
+                    while (stairwayX > room.X && stairwayX < room.X + room.Width && stairwayY > room.Y && stairwayY < room.Y + room.Height) {
                         stairwayX -= stairwayDirection;
                         stairwayY--;
                     }
                     stairwayX += stairwayDirection;
                     stairwayY++;
-                    while (stairwayX > room.X && stairwayX < room.X + room.Width && stairwayY > room.Y && stairwayY < room.Y + room.Height)
-                    {
+                    while (stairwayX > room.X && stairwayX < room.X + room.Width && stairwayY > room.Y && stairwayY < room.Y + room.Height) {
                         WorldGen.PlaceTile(stairwayX, stairwayY, TileType<FractalPlatformTile>(), true, forced: true);
                         WorldGen.SlopeTile(stairwayX, stairwayY, slope);
                         WorldGen.TileFrame(stairwayX, stairwayY);
 
-                        if (stairwayY == room.Y + 1 && stairwayX - stairwayDirection > room.X && stairwayX - stairwayDirection < room.X + room.Width)
-                        {
+                        if (stairwayY == room.Y + 1 && stairwayX - stairwayDirection > room.X && stairwayX - stairwayDirection < room.X + room.Width) {
                             WorldGen.PlaceTile(stairwayX - stairwayDirection, stairwayY, TileType<FractalPlatformTile>(), true, forced: true);
                         }
 
@@ -2525,15 +2262,12 @@ namespace Polarities
 
             //loot chests, at least one is guaranteed
             Rectangle guaranteedChestRoom = WorldGen.genRand.Next<Rectangle>(rooms);
-            foreach (Rectangle room in rooms)
-            {
-                if (room == guaranteedChestRoom || WorldGen.genRand.NextBool())
-                {
+            foreach (Rectangle room in rooms) {
+                if (room == guaranteedChestRoom || WorldGen.genRand.NextBool()) {
                     //generate a loot chest
                     bool gen = false;
                     int attempts = 0;
-                    while (!gen && attempts < 1000)
-                    {
+                    while (!gen && attempts < 1000) {
                         attempts++;
                         int chestX = WorldGen.genRand.Next(room.X + 1, room.X + room.Width - 2);
                         int chestY = room.Y + room.Height - 2;
@@ -2543,8 +2277,7 @@ namespace Polarities
                             !Framing.GetTileSafely(chestX + 1, chestY).HasTile &&
                             !Framing.GetTileSafely(chestX + 1, chestY + 1).HasTile &&
                             Framing.GetTileSafely(chestX, chestY + 2).HasTile &&
-                            Framing.GetTileSafely(chestX + 1, chestY + 2).HasTile)
-                        {
+                            Framing.GetTileSafely(chestX + 1, chestY + 2).HasTile) {
                             gen = true;
                             GenFractalLootChest(WorldGen.genRand.Next(room.X + 1, room.X + room.Width - 2), room.Y + room.Height - 2);
                         }
@@ -2564,8 +2297,7 @@ namespace Polarities
         //this is initialized in InitGenpass
         private static int[] protectedTiles;
 
-        private static void ResetFractalChestData()
-        {
+        private static void ResetFractalChestData() {
             unlockedChestItemIndex = 0;
             lockedChestItemIndex = 0;
             itemsToPlaceInUnlockedFractalChests = new int[] {
@@ -2591,14 +2323,11 @@ namespace Polarities
                 };
         }
 
-        private static void GenFractalLootChest(int x, int y)
-        {
-            switch (WorldGen.genRand.Next(2))
-            {
+        private static void GenFractalLootChest(int x, int y) {
+            switch (WorldGen.genRand.Next(2)) {
                 case 0:
                     int chestIndex = WorldGen.PlaceChest(x, y + 1, (ushort)ModContent.TileType<FractalChestTile>(), true, style: 0);
-                    if (chestIndex != -1)
-                    {
+                    if (chestIndex != -1) {
                         //put items in chest
                         Chest chest = Main.chest[chestIndex];
                         chest.item[0].SetDefaults(itemsToPlaceInUnlockedFractalChests[unlockedChestItemIndex]);
@@ -2612,8 +2341,7 @@ namespace Polarities
                     break;
                 case 1:
                     int chestIndexB = WorldGen.PlaceChest(x, y + 1, (ushort)ModContent.TileType<FractalChestTile>(), true, style: 1);
-                    if (chestIndexB != -1)
-                    {
+                    if (chestIndexB != -1) {
                         //put items in chest
                         Chest chest = Main.chest[chestIndexB];
                         chest.item[0].SetDefaults(itemsToPlaceInLockedFractalChests[lockedChestItemIndex]);
@@ -2630,60 +2358,49 @@ namespace Polarities
             }
         }
 
-        public static bool IsFractalOcean(int x, int y)
-        {
+        public static bool IsFractalOcean(int x, int y) {
             float xFrac = (x + ((x > Main.maxTilesX / 2) ? 20 : -20)) / (float)Main.maxTilesX;
             float yFrac = (y + 20) / (float)Main.maxTilesY;
 
             return yFrac > 2 - 3 * (2 * xFrac - 1) * (2 * xFrac - 1);
         }
 
-        public double expInterpolate(double start, double finish, double progress, double baseVal)
-        {
+        public double expInterpolate(double start, double finish, double progress, double baseVal) {
             return (Math.Pow(baseVal, progress) - 1) / (baseVal - 1) * (finish - start) + start;
         }
 
-        public Vector2 FindRandomVariance(int i, int j)
-        {
+        public Vector2 FindRandomVariance(int i, int j) {
             float x = (float)(Math.Sin(randOffsets[0] + i / 80f) + Math.Sin(randOffsets[1] + j / 80f) + Math.Sin(randOffsets[2] + (i + j) / (80f * Math.Sqrt(2))) + Math.Sin(randOffsets[3] + (i - j) / (80f * Math.Sqrt(2))));
             float y = (float)(Math.Sin(randOffsets[4] + i / 80f) + Math.Sin(randOffsets[5] + j / 80f) + Math.Sin(randOffsets[6] + (i + j) / (80f * Math.Sqrt(2))) + Math.Sin(randOffsets[7] + (i - j) / (80f * Math.Sqrt(2))));
             return new Vector2(x, y);
         }
 
-        private BigRational UCoefficient(int n, int k)
-        {
-            if (knownUCoefficients[n, k])
-            {
+        private BigRational UCoefficient(int n, int k) {
+            if (knownUCoefficients[n, k]) {
                 return uCoefficients[n, k];
             }
 
             knownUCoefficients[n, k] = true;
 
-            if (k == Math.Pow(2, n) - 1)
-            {
+            if (k == Math.Pow(2, n) - 1) {
                 uCoefficients[n, k] = new BigRational(1, 1);
                 return new BigRational(1, 1);
             }
-            else if (k < Math.Pow(2, n) - 1)
-            {
+            else if (k < Math.Pow(2, n) - 1) {
                 BigRational outVal = new BigRational(0, 1);
-                for (int j = 0; j <= k; j++)
-                {
+                for (int j = 0; j <= k; j++) {
                     outVal += UCoefficient(n - 1, j) * UCoefficient(n - 1, k - j);
                 }
                 uCoefficients[n, k] = outVal;
                 return outVal;
             }
-            else if (k < Math.Pow(2, n + 1) - 1)
-            {
+            else if (k < Math.Pow(2, n + 1) - 1) {
                 uCoefficients[n, k] = new BigRational(0, 1);
                 return new BigRational(0, 1);
             }
-            else
-            {
+            else {
                 BigRational val = new BigRational(0, 1);
-                for (int j = 1; j <= k - 1; j++)
-                {
+                for (int j = 1; j <= k - 1; j++) {
                     val += UCoefficient(n, j) * UCoefficient(n, k - j);
                 }
                 uCoefficients[n, k] = (UCoefficient(n + 1, k) - val) / 2;
@@ -2691,13 +2408,11 @@ namespace Polarities
             }
         }
 
-        private Vector2 MandelbrotBoundary(double angle)
-        {
+        private Vector2 MandelbrotBoundary(double angle) {
             Vector2 unit = new Vector2(1, 0);
             Vector2 output = unit.RotatedBy(-angle);
 
-            for (int i = 0; i < COEFFICIENTCOUNT; i++)
-            {
+            for (int i = 0; i < COEFFICIENTCOUNT; i++) {
                 output += (float)bCoefficients[i] * unit.RotatedBy(i * angle).SafeNormalize(Vector2.Zero);
             }
 
@@ -2707,40 +2422,32 @@ namespace Polarities
         //fractal spawn conditions!
 
         //biome conditions
-        public static float SpawnConditionFractalWaters(NPCSpawnInfo info)
-        {
+        public static float SpawnConditionFractalWaters(NPCSpawnInfo info) {
             return info.Water ? 1f : 0f;
         }
-        public static float SpawnConditionFractalCoasts(NPCSpawnInfo info)
-        {
+        public static float SpawnConditionFractalCoasts(NPCSpawnInfo info) {
             return (IsFractalOcean(info.SpawnTileX, info.SpawnTileY) && !info.Water) ? 1f : 0f;
         }
-        public static float SpawnConditionFractalWastes(NPCSpawnInfo info)
-        {
+        public static float SpawnConditionFractalWastes(NPCSpawnInfo info) {
             return ((Main.tile[info.SpawnTileX, info.SpawnTileY].WallType == WallType<FractalDuststoneWallNatural>() || info.SpawnTileType == TileType<FractalDustTile>() || info.SpawnTileType == TileType<FractalDuststoneTile>() || info.SpawnTileType == TileType<HyphaeFractalDuststone>()) && !IsFractalOcean(info.SpawnTileX, info.SpawnTileY) && !info.Water) ? 1f : 0f;
         }
-        public static float SpawnConditionFractalNormal(NPCSpawnInfo info)
-        {
+        public static float SpawnConditionFractalNormal(NPCSpawnInfo info) {
             return (!(Main.tile[info.SpawnTileX, info.SpawnTileY].WallType == WallType<FractalDuststoneWallNatural>() || info.SpawnTileType == TileType<FractalDustTile>() || info.SpawnTileType == TileType<FractalDuststoneTile>() || info.SpawnTileType == TileType<HyphaeFractalDuststone>()) && !IsFractalOcean(info.SpawnTileX, info.SpawnTileY) && !info.Water) ? 1f : 0f;
         }
 
         //depth conditions
-        public static float SpawnConditionFractalSky(NPCSpawnInfo info)
-        {
+        public static float SpawnConditionFractalSky(NPCSpawnInfo info) {
             return info.SpawnTileY < skyHeight ? 1f : 0f;
         }
-        public static float SpawnConditionFractalOverworld(NPCSpawnInfo info)
-        {
+        public static float SpawnConditionFractalOverworld(NPCSpawnInfo info) {
             return (Main.tile[info.SpawnTileX, info.SpawnTileY].WallType == 0 && info.SpawnTileY >= skyHeight) ? 1f : 0f;
         }
-        public static float SpawnConditionFractalUnderground(NPCSpawnInfo info)
-        {
+        public static float SpawnConditionFractalUnderground(NPCSpawnInfo info) {
             return ((Main.tile[info.SpawnTileX, info.SpawnTileY].WallType != 0 && info.SpawnTileY >= skyHeight)) ? 1f : 0f;
         }
 
         //are we in a sentinel cave
-        public static bool InSentinelCave(Vector2 position)
-        {
+        public static bool InSentinelCave(Vector2 position) {
             //Vector2 worldPosition = NPCs.SelfsimilarSentinel.SelfsimilarSentinel.GetNearestArenaPosition(position);
 
             //if ((worldPosition - position).Length() > NPCs.SelfsimilarSentinel.SelfsimilarSentinel.ARENA_RADIUS)
@@ -2752,16 +2459,13 @@ namespace Polarities
 
 
         //reset dimension
-        public static void ResetDimension()
-        {
+        public static void ResetDimension() {
             //despawn fractal enemies
-            for (int i = 0; i < Main.maxNPCs; i++)
-            {
+            for (int i = 0; i < Main.maxNPCs; i++) {
                 if (!Main.npc[i].townNPC)
                     Main.npc[i].active = false;
             }
-            for (int i = 0; i < Main.maxProjectiles; i++)
-            {
+            for (int i = 0; i < Main.maxProjectiles; i++) {
                 if (!Main.projPet[Main.projectile[i].type])
                     Main.projectile[i].active = false;
             }
@@ -2774,10 +2478,8 @@ namespace Polarities
         }
     }
 
-    public class FractalSystem : ModSystem
-    {
-        public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts)
-        {
+    public class FractalSystem : ModSystem {
+        public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts) {
             FractalWastesBiome.TileCount = tileCounts[ModContent.TileType<FractalDustTile>()] + tileCounts[ModContent.TileType<FractalDuststoneTile>()] + tileCounts[ModContent.TileType<HyphaeFractalDuststone>()];
         }
     }

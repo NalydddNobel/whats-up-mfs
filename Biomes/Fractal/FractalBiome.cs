@@ -28,11 +28,11 @@ namespace Polarities.Biomes.Fractal
             {
                 SkyManager.Instance["Polarities:FractalDimension"] = new FractalSubworldSky();
                 Filters.Scene["Polarities:FractalDimension"] = new Filter(new FractalScreenShaderData("FilterFractal"), EffectPriority.VeryLow);
-                On.Terraria.Main.DrawBlack += Main_DrawBlack;
+                Terraria.On_Main.DrawBlack += Main_DrawBlack;
             }
         }
 
-        private static void Main_DrawBlack(On.Terraria.Main.orig_DrawBlack orig, Main self, bool force)
+        private static void Main_DrawBlack(Terraria.On_Main.orig_DrawBlack orig, Main self, bool force)
         {
             if (FractalSubworld.Active)
             {

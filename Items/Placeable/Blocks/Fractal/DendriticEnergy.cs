@@ -9,7 +9,7 @@ namespace Polarities.Items.Placeable.Blocks.Fractal
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = 100;
+            Item.ResearchUnlockCount = 100;
             ItemID.Sets.SortingPriorityMaterials[Type] = 58;
             ItemID.Sets.ItemNoGravity[Type] = true;
             ItemID.Sets.ItemIconPulse[Type] = true;

@@ -8,7 +8,7 @@ namespace Polarities.Items.Armor.Vanity.ElectroManiacSet
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
         }
 
         public override void SetDefaults()
@@ -26,7 +26,7 @@ namespace Polarities.Items.Armor.Vanity.ElectroManiacSet
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
 
             ArmorIDs.Body.Sets.shouldersAreAlwaysInTheBack[EquipLoader.GetEquipSlot(Mod, Name, EquipType.Body)] = true;
         }
@@ -46,7 +46,7 @@ namespace Polarities.Items.Armor.Vanity.ElectroManiacSet
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
         }
 
         public override void SetDefaults()

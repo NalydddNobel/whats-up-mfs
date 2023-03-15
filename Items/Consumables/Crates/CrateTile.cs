@@ -54,9 +54,9 @@ namespace Polarities.Items.Consumables.Crates
         {
             crateIndexToItemType.Add(CrateIndex, Type);
 
-            Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}");
+            // Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}");
 
-            SacrificeTotal = (5);
+            Item.ResearchUnlockCount = (5);
 
             ItemID.Sets.IsFishingCrate[Type] = true;
             ItemID.Sets.IsFishingCrate[Type] = HardmodeCrate;

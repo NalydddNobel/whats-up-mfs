@@ -16,7 +16,7 @@ namespace Polarities.Items.Weapons.Summon.Orbs
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = 1;
+            Item.ResearchUnlockCount = 1;
         }
 
         public override void SetDefaults()
@@ -65,7 +65,7 @@ namespace Polarities.Items.Weapons.Summon.Orbs
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Antibrot");
+            // DisplayName.SetDefault("Antibrot");
             Main.projFrames[Type] = 10;
         }
 
@@ -339,7 +339,7 @@ namespace Polarities.Items.Weapons.Summon.Orbs
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Homing Energy");
+            // DisplayName.SetDefault("Homing Energy");
             ProjectileID.Sets.MinionShot[Type] = true;
             ProjectileID.Sets.MinionSacrificable[Type] = false;
 
@@ -400,11 +400,11 @@ namespace Polarities.Items.Weapons.Summon.Orbs
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
         }
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             Projectile.Kill();
         }
-        public override void OnHitPvp(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             Projectile.Kill();
         }
@@ -455,7 +455,7 @@ namespace Polarities.Items.Weapons.Summon.Orbs
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Oscillating Ray");
+            // DisplayName.SetDefault("Oscillating Ray");
             ProjectileID.Sets.MinionShot[Type] = true;
             ProjectileID.Sets.MinionSacrificable[Type] = false;
             /*
@@ -583,7 +583,7 @@ namespace Polarities.Items.Weapons.Summon.Orbs
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Antibrot Image");
+            // DisplayName.SetDefault("Antibrot Image");
 
             ProjectileID.Sets.MinionShot[Type] = true;
             ProjectileID.Sets.MinionSacrificable[Type] = false;

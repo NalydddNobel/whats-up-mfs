@@ -16,7 +16,7 @@ namespace Polarities.Items.Accessories.Wings
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
 
             //registers a wings glowmask
             ArmorMasks.wingIndexToArmorDraw.TryAdd(EquipLoader.GetEquipSlot(Mod, Name, EquipType.Wings), this);

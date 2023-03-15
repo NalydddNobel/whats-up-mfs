@@ -52,7 +52,7 @@ namespace Polarities.Items.Placeable.Trophies
         {
             trophyIndexToItemType.Add(TrophyIndex, Type);
 
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
         }
 
         public override void SetDefaults()

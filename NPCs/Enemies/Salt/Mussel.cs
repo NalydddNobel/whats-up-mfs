@@ -143,7 +143,7 @@ namespace Polarities.NPCs.Enemies.Salt
             }
         }
 
-        public override void ModifyHitPlayer(Player target, ref int damage, ref bool crit)
+        public override void ModifyHitPlayer(Player target, ref Player.HurtModifiers modifiers)
         {
             //snap closed on player
             if (NPC.ai[1] == 1)
@@ -153,7 +153,7 @@ namespace Polarities.NPCs.Enemies.Salt
             }
             else
             {
-                damage /= 3;
+                modifiers.SourceDamage *= 0.33f;
             }
         }
 

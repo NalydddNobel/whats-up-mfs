@@ -14,7 +14,7 @@ namespace Polarities.Items.Accessories
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
             PolaritiesItem.IsFlawless.Add(Type);
         }
 

@@ -12,7 +12,7 @@ namespace Polarities.Items.Weapons.Summon.Minions
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
         }
 
         public override void SetDefaults()
@@ -158,7 +158,7 @@ namespace Polarities.Items.Weapons.Summon.Minions
             }
         }
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             Projectile.ai[0] = 0f;
             target.AddBuff(BuffID.OnFire, 120);

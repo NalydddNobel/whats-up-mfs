@@ -11,7 +11,7 @@ namespace Polarities.NPCs.Eclipxie
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Eclipse Flare");
+            // DisplayName.SetDefault("Eclipse Flare");
         }
 
         public override void SetDefaults()

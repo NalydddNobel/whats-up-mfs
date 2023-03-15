@@ -329,7 +329,7 @@ namespace Polarities.NPCs.Enemies.LavaOcean
             }
         }
 
-        public override void OnHitPlayer(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
         {
             target.AddBuff(BuffType<Incinerating>(), 60, true);
         }
@@ -408,7 +408,7 @@ namespace Polarities.NPCs.Enemies.LavaOcean
             Main.dust[Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Lava, Scale: 1.5f)].noGravity = true;
         }
 
-        public override void OnHitPlayer(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             target.AddBuff(BuffType<Incinerating>(), 60, true);
         }
@@ -461,7 +461,7 @@ namespace Polarities.NPCs.Enemies.LavaOcean
             Projectile.hide = true;
         }
 
-        public override void OnHitPlayer(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             target.AddBuff(BuffType<Incinerating>(), 60, true);
         }

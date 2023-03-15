@@ -675,11 +675,11 @@ namespace Polarities.NPCs.StormCloudfish
             return NPC.ai[0] == 1 || NPC.ai[0] == 2;
         }
 
-        public override bool? CanHitNPC(NPC target)
+        public override bool CanHitNPC(NPC target)/* tModPorter Suggestion: Return true instead of null */
         {
             if (NPC.ai[0] == 1 || NPC.ai[0] == 2)
             {
-                return null;
+                return true;
             }
             return false;
         }

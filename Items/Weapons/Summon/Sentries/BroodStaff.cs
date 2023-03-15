@@ -13,7 +13,7 @@ namespace Polarities.Items.Weapons.Summon.Sentries
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
         }
 
         public override void SetDefaults()
@@ -136,9 +136,9 @@ namespace Polarities.Items.Weapons.Summon.Sentries
             hitbox.Height += 26;
         }
 
-        public override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
         {
-            hitDirection = Projectile.spriteDirection;
+            modifiers.HitDirectionOverride = Projectile.spriteDirection;
         }
 
         public override bool? CanCutTiles()
@@ -152,7 +152,7 @@ namespace Polarities.Items.Weapons.Summon.Sentries
             return null;
         }
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(BuffID.Poisoned, 300);
         }

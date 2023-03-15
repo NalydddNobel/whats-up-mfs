@@ -10,9 +10,9 @@ namespace Polarities.Items.Consumables
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (10);
+            Item.ResearchUnlockCount = (10);
 
-            Tooltip.SetDefault(Lang.GetTooltip(ItemID.GoldenDelight).GetLine(0));
+            // Tooltip.SetDefault(Lang.GetTooltip(ItemID.GoldenDelight).GetLine(0));
 
             DrawAnimationVertical animation = new DrawAnimationVertical(1, 3)
             {

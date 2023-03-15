@@ -17,7 +17,7 @@ namespace Polarities.Items.Weapons.Melee
             ItemID.Sets.GamepadExtraRange[Item.type] = 15;
             ItemID.Sets.GamepadSmartQuickReach[Item.type] = true;
 
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
         }
 
         public override void SetDefaults()
@@ -57,7 +57,7 @@ namespace Polarities.Items.Weapons.Melee
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Glow-Yo");
+            // DisplayName.SetDefault("Glow-Yo");
 
             // The following sets are only applicable to yoyo that use aiStyle 99.
             // YoyosLifeTimeMultiplier is how long in seconds the yoyo will stay out before automatically returning to the player. 

@@ -10,7 +10,7 @@ namespace Polarities.Items.Placeable.Furniture.Fractal
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = 100;
+            Item.ResearchUnlockCount = 100;
         }
 
         public override int PlaceTile => ModContent.TileType<FractalTorchTile>();

@@ -3,6 +3,7 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 using static Terraria.ModLoader.ModContent;
@@ -56,7 +57,7 @@ namespace Polarities.Items.Placeable.Furniture
             TileObjectData.addTile(Type);
 
             AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTorch);
-            AddMapEntry(new Color(82, 179, 203), CreateMapEntryName("Stromatolight"));
+            AddMapEntry(new Color(82, 179, 203), Language.GetText("Mods.Polarities.MapObject.Stromatolight"));
 
             DustType = 37;
             ItemDrop = ItemType<Stromatolight>();

@@ -25,9 +25,9 @@ namespace Polarities.NPCs.TownNPCs
     {
         public override void Load()
         {
-            On.Terraria.GameContent.Personalities.AllPersonalitiesModifier.ModifyShopPrice_Relationships += AllPersonalitiesModifier_ModifyShopPrice_Relationships;
+            Terraria.GameContent.Personalities.On_AllPersonalitiesModifier.ModifyShopPrice_Relationships += AllPersonalitiesModifier_ModifyShopPrice_Relationships;
 
-            IL.Terraria.NPC.checkDead += NPC_checkDead;
+            Terraria.IL_NPC.checkDead += NPC_checkDead;
         }
 
         //makes them leave rather than die
@@ -55,7 +55,7 @@ namespace Polarities.NPCs.TownNPCs
         }
 
         //makes them not like the princess
-        private void AllPersonalitiesModifier_ModifyShopPrice_Relationships(On.Terraria.GameContent.Personalities.AllPersonalitiesModifier.orig_ModifyShopPrice_Relationships orig, HelperInfo info, Terraria.GameContent.ShopHelper shopHelperInstance)
+        private void AllPersonalitiesModifier_ModifyShopPrice_Relationships(Terraria.GameContent.Personalities.On_AllPersonalitiesModifier.orig_ModifyShopPrice_Relationships orig, HelperInfo info, Terraria.GameContent.ShopHelper shopHelperInstance)
         {
             if (info.npc.type == NPCType<Ghostwriter>())
             {
@@ -132,7 +132,7 @@ namespace Polarities.NPCs.TownNPCs
             return NPC.downedSlimeKing || NPC.downedBoss1 || NPC.downedBoss2 || NPC.downedBoss3 || NPC.downedQueenBee || NPC.downedDeerclops || Main.hardMode || PolaritiesSystem.downedStormCloudfish || PolaritiesSystem.downedStarConstruct || PolaritiesSystem.downedGigabat || PolaritiesSystem.downedRiftDenizen;
         }
 
-        public override bool CanTownNPCSpawn(int numTownNPCs, int money)
+        public override bool CanTownNPCSpawn(int numTownNPCs)/* tModPorter Suggestion: Copy the implementation of NPC.SpawnAllowed_Merchant in vanilla if you to count money, and be sure to set a flag when unlocked, so you don't count every tick. */
         {
             return SpawnCondition();
         }
@@ -2078,7 +2078,7 @@ namespace Polarities.NPCs.TownNPCs
             }
         }
 
-        public override void HitEffect(int hitDirection, double damage)
+        public override void HitEffect(NPC.HitInfo hit)
         {
             //produces a puff of dust on death
             if (NPC.life <= 0)

@@ -16,7 +16,7 @@ namespace Polarities.Items.Weapons.Magic
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
         }
 
         public override void SetDefaults()
@@ -139,12 +139,12 @@ namespace Polarities.Items.Weapons.Magic
             }
         }
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             Projectile.friendly = false;
 
             target.AddBuff(BuffID.OnFire, 120);
-            if ((crit && Main.rand.NextBool(2) || Main.rand.NextBool(2)) && Main.myPlayer == Projectile.owner)
+            if ((hit.Crit && Main.rand.NextBool(2) || Main.rand.NextBool(2)) && Main.myPlayer == Projectile.owner)
             {
                 TryShot(Projectile.GetSource_OnHit(target), target.Center, target.velocity, Projectile.damage, Projectile.knockBack, Projectile.owner);
             }
@@ -318,7 +318,7 @@ namespace Polarities.Items.Weapons.Magic
             // do whatever custom stuff here
         }
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             Projectile.friendly = false;
 

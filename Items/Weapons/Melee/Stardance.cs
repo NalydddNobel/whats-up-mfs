@@ -15,7 +15,7 @@ namespace Polarities.Items.Weapons.Melee
         {
             Item.staff[Item.type] = true;
 
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
             PolaritiesItem.IsFlawless.Add(Type);
         }
 
@@ -92,7 +92,7 @@ namespace Polarities.Items.Weapons.Melee
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Star Lance");
+            // DisplayName.SetDefault("Star Lance");
         }
         public override void SetDefaults()
         {

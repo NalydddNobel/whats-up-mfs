@@ -12,7 +12,7 @@ namespace Polarities.Items.Armor.SnakescaleArmor
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
         }
 
         public override void SetDefaults()
@@ -43,7 +43,7 @@ namespace Polarities.Items.Armor.SnakescaleArmor
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
         }
 
         public override void SetDefaults()
@@ -76,7 +76,7 @@ namespace Polarities.Items.Armor.SnakescaleArmor
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
         }
 
         public override void SetDefaults()

@@ -15,7 +15,7 @@ namespace Polarities.Items.Weapons.Magic
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = 1;
+            Item.ResearchUnlockCount = 1;
         }
 
         public override void SetDefaults()
@@ -72,7 +72,7 @@ namespace Polarities.Items.Weapons.Magic
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Giant Cone");
+            // DisplayName.SetDefault("Giant Cone");
             Main.projFrames[Projectile.type] = 1;
         }
 

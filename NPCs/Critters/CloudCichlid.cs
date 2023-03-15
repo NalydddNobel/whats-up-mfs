@@ -119,9 +119,9 @@ namespace Polarities.NPCs.Critters
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (5);
+            Item.ResearchUnlockCount = (5);
 
-            DisplayName.SetDefault("{$Mods.Polarities.NPCName.CloudCichlid}");
+            // DisplayName.SetDefault("{$Mods.Polarities.NPCName.CloudCichlid}");
         }
 
         public override void SetDefaults()
@@ -254,9 +254,9 @@ namespace Polarities.NPCs.Critters
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (5);
+            Item.ResearchUnlockCount = (5);
 
-            DisplayName.SetDefault("{$Mods.Polarities.NPCName.StormcloudCichlid}");
+            // DisplayName.SetDefault("{$Mods.Polarities.NPCName.StormcloudCichlid}");
         }
 
         public override void SetDefaults()

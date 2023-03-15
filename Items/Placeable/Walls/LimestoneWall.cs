@@ -10,9 +10,9 @@ namespace Polarities.Items.Placeable.Walls
     {
         public override void SetDefaults()
         {
-            Item.DefaultToPlacableWall((ushort)WallType<LimestoneWallPlaced>());
+            Item.DefaultToPlaceableWall((ushort)WallType<LimestoneWallPlaced>());
 
-            SacrificeTotal = (400);
+            Item.ResearchUnlockCount = (400);
         }
 
         public override void AddRecipes()

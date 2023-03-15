@@ -12,7 +12,7 @@ namespace Polarities.Items.Weapons.Melee
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
         }
 
         public override void SetDefaults()
@@ -66,7 +66,7 @@ namespace Polarities.Items.Weapons.Melee
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("{$Mods.Polarities.ItemName.CavernCarver}");
+            // DisplayName.SetDefault("{$Mods.Polarities.ItemName.CavernCarver}");
         }
 
         public override void SetDefaults()

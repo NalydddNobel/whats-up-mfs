@@ -13,7 +13,7 @@ namespace Polarities.NPCs.Eclipxie
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Lunar Aura");
+            // DisplayName.SetDefault("Lunar Aura");
             Main.projFrames[Projectile.type] = 1;
         }
 
@@ -49,7 +49,7 @@ namespace Polarities.NPCs.Eclipxie
             if (!pixie.active) { Projectile.Kill(); }
         }
 
-        public override void OnHitPlayer(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             target.AddBuff(BuffID.Frostburn, 180, true);
         }

@@ -16,7 +16,7 @@ namespace Polarities.Items.Books
         public override void Update(Player player, ref int buffIndex)
         {
             player.GetModPlayer<PolaritiesPlayer>().critDamageBoostMultiplier *= 1.25f;
-            player.GetModPlayer<PolaritiesPlayer>().ignoreCritDefenseAmount += 25;
+            player.GetModPlayer<PolaritiesPlayer>().criticalStrikeFlatDamage += 10;
 
             base.Update(player, ref buffIndex);
         }

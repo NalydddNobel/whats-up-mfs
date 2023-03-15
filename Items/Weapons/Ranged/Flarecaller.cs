@@ -17,7 +17,7 @@ namespace Polarities.Items.Weapons.Ranged
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (99);
+            Item.ResearchUnlockCount = (99);
         }
 
         public override void SetDefaults()
@@ -58,7 +58,7 @@ namespace Polarities.Items.Weapons.Ranged
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("{$Mods.Polarities.ItemName.Flarecaller}");
+            // DisplayName.SetDefault("{$Mods.Polarities.ItemName.Flarecaller}");
         }
 
         public override void SetDefaults()
@@ -198,7 +198,7 @@ namespace Polarities.Items.Weapons.Ranged
             }
         }
 
-        public override void OnHitPlayer(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             target.AddBuff(BuffID.OnFire, 600, true);
         }

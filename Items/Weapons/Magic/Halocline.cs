@@ -13,7 +13,7 @@ namespace Polarities.Items.Weapons.Magic
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
         }
 
         public override void SetDefaults()
@@ -118,12 +118,12 @@ namespace Polarities.Items.Weapons.Magic
             }
         }
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(BuffType<Buffs.Desiccating>(), 3 * 60);
         }
 
-        public override void OnHitPvp(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             target.AddBuff(BuffType<Buffs.Desiccating>(), 3 * 60);
         }
@@ -133,7 +133,7 @@ namespace Polarities.Items.Weapons.Magic
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("{$Mods.Polarities.ProjectileName.HaloclineBubbleLarge}");
+            // DisplayName.SetDefault("{$Mods.Polarities.ProjectileName.HaloclineBubbleLarge}");
 
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 8;
             ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
@@ -223,9 +223,9 @@ namespace Polarities.Items.Weapons.Magic
             return false;
         }
 
-        public override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
         {
-            damage = (int)(damage * Projectile.scale);
+            modifiers.SourceDamage *= Projectile.scale;
 
             Projectile.scale -= 0.1f;
             for (int i = 0; i < 6 * Projectile.scale; i++)
@@ -245,18 +245,15 @@ namespace Polarities.Items.Weapons.Magic
             Projectile.Center = oldCenter;
         }
 
-        public override void ModifyHitPvp(Player target, ref int damage, ref bool crit)
-        {
-            damage = (int)(damage * Projectile.scale);
+        public override void ModifyHitPlayer(Player target, ref Player.HurtModifiers modifiers) {
+            modifiers.SourceDamage *= Projectile.scale;
 
             Projectile.scale -= 0.1f;
-            for (int i = 0; i < 6 * Projectile.scale; i++)
-            {
+            for (int i = 0; i < 6 * Projectile.scale; i++) {
                 Main.dust[Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustType<Dusts.SaltWaterSplash>(), Scale: 1.5f * Projectile.scale)].noGravity = true; ;
             }
 
-            if (Projectile.scale <= 0)
-            {
+            if (Projectile.scale <= 0) {
                 Projectile.Kill();
                 return;
             }

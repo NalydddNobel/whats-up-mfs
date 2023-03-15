@@ -23,12 +23,12 @@ namespace Polarities.Effects
             AfterLiquidsAdditive = new ParticleLayer();
             WarpParticles = new ParticleLayer();
 
-            On.Terraria.Main.UpdateParticleSystems += Main_UpdateParticleSystems;
+            Terraria.On_Main.UpdateParticleSystems += Main_UpdateParticleSystems;
 
-            On.Terraria.Main.DrawPlayers_AfterProjectiles += Main_DrawPlayers_AfterProjectiles;
+            Terraria.On_Main.DrawPlayers_AfterProjectiles += Main_DrawPlayers_AfterProjectiles;
         }
 
-        private void Main_UpdateParticleSystems(On.Terraria.Main.orig_UpdateParticleSystems orig, Main self)
+        private void Main_UpdateParticleSystems(Terraria.On_Main.orig_UpdateParticleSystems orig, Main self)
         {
             orig(self);
 
@@ -38,7 +38,7 @@ namespace Polarities.Effects
             WarpParticles.Update();
         }
 
-        private void Main_DrawPlayers_AfterProjectiles(On.Terraria.Main.orig_DrawPlayers_AfterProjectiles orig, Main self)
+        private void Main_DrawPlayers_AfterProjectiles(Terraria.On_Main.orig_DrawPlayers_AfterProjectiles orig, Main self)
         {
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
             BeforePlayersAdditive.Draw(Main.spriteBatch);

@@ -82,11 +82,11 @@ namespace Polarities.Items.Weapons.Melee.Warhammers
             return player.altFunctionUse == 2;
         }
 
-        public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
+        public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(BuffType<Incinerating>(), 120);
 
-            base.OnHitNPC(player, target, damage, knockBack, crit);
+            base.OnHitNPC(player, target, hit, damageDone);
         }
 
         public override void AddRecipes()
@@ -172,7 +172,7 @@ namespace Polarities.Items.Weapons.Melee.Warhammers
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("{$Mods.Polarities.ItemName.SeismicStriker}");
+            // DisplayName.SetDefault("{$Mods.Polarities.ItemName.SeismicStriker}");
         }
 
         public override void SetDefaults()
@@ -236,13 +236,12 @@ namespace Polarities.Items.Weapons.Melee.Warhammers
                 Projectile.rotation -= MathHelper.ToRadians(90f);
             }
         }
-        public override void OnHitNPC(NPC target, int damage, float knockBack, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(BuffType<Incinerating>(), 20);
         }
 
-        public override void OnHitPvp(Player target, int damage, bool crit)
-        {
+        public override void OnHitPlayer(Player target, Player.HurtInfo info) {
             target.AddBuff(BuffType<Incinerating>(), 20);
         }
 
@@ -338,7 +337,7 @@ namespace Polarities.Items.Weapons.Melee.Warhammers
             DrawLayer.AddProjectile<DrawLayerAdditiveAfterProjectiles>(index);
         }
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(BuffType<Incinerating>(), 20);
 

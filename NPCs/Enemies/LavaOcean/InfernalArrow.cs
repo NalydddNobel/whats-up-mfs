@@ -145,12 +145,12 @@ namespace Polarities.NPCs.Enemies.LavaOcean
             }
         }
 
-        public override void HitEffect(int hitDirection, double damage)
+        public override void HitEffect(NPC.HitInfo hit)
         {
             //adapted from the vanilla weapon eneimies
             if (NPC.life > 0)
             {
-                for (int num473 = 0; num473 < damage / NPC.lifeMax * 50.0; num473++)
+                for (int num473 = 0; num473 < hit.Damage / NPC.lifeMax * 50.0; num473++)
                 {
                     int num474 = Dust.NewDust(NPC.position, NPC.width, NPC.height, 31, 0f, 0f, 0, default(Color), 1.5f);
                     Main.dust[num474].noGravity = true;
@@ -179,7 +179,7 @@ namespace Polarities.NPCs.Enemies.LavaOcean
             gore28.velocity *= 0.5f;
         }
 
-        public override void OnHitPlayer(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
         {
             target.AddBuff(BuffID.OnFire, 60);
         }

@@ -15,7 +15,7 @@ namespace Polarities.NPCs.Eclipxie
         private int timer;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Eclipse Flare");
+            // DisplayName.SetDefault("Eclipse Flare");
         }
 
         public override void SetDefaults()
@@ -80,7 +80,7 @@ namespace Polarities.NPCs.Eclipxie
             Projectile.ai[1] += 1f;
         }
 
-        public override void OnHitPlayer(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             target.AddBuff(BuffID.OnFire, 600, true);
         }

@@ -13,10 +13,10 @@ namespace Polarities.Items.Weapons.Summon.Minions
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Salt Killifish Staff");
-            Tooltip.SetDefault("Summons a salt killifish to protect you");
+            // DisplayName.SetDefault("Salt Killifish Staff");
+            // Tooltip.SetDefault("Summons a salt killifish to protect you");
 
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
         }
 
         public override void SetDefaults()
@@ -173,7 +173,7 @@ namespace Polarities.Items.Weapons.Summon.Minions
             return Projectile.ai[0] != -1;
         }
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(BuffType<Desiccating>(), 30);
         }

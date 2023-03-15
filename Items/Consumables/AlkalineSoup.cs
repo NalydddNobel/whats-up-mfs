@@ -12,7 +12,7 @@ namespace Polarities.Items.Consumables
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (10);
+            Item.ResearchUnlockCount = (10);
 
             DrawAnimationVertical animation = new DrawAnimationVertical(1, 3)
             {

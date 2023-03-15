@@ -12,7 +12,7 @@ namespace Polarities.Items.Placeable.Blocks.Fractal
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = 100;
+            Item.ResearchUnlockCount = 100;
             ItemID.Sets.ExtractinatorMode[Type] = Type;
         }
 
@@ -21,7 +21,7 @@ namespace Polarities.Items.Placeable.Blocks.Fractal
             Item.DefaultToPlaceableTile(ModContent.TileType<LightslateTile>());
         }
 
-        public override void ExtractinatorUse(ref int resultType, ref int resultStack)
+        public override void ExtractinatorUse(int extractinatorBlockType, ref int resultType, ref int resultStack)
         {
             resultStack = 1;
 
@@ -279,7 +279,7 @@ namespace Polarities.Items.Placeable.Blocks.Fractal
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Lightslate");
+            // DisplayName.SetDefault("Lightslate");
             ProjectileID.Sets.ForcePlateDetection[Projectile.type] = true;
         }
 

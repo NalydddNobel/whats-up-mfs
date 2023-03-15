@@ -88,7 +88,7 @@ namespace Polarities.Items.Weapons.Melee.Warhammers
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("{$Mods.Polarities.ItemName.CobaltWarhammer}");
+            // DisplayName.SetDefault("{$Mods.Polarities.ItemName.CobaltWarhammer}");
         }
 
         public override void SetDefaults()

@@ -12,7 +12,7 @@ namespace Polarities.Items.Weapons.Ranged.Ammo
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (99);
+            Item.ResearchUnlockCount = (99);
         }
 
         public override void SetDefaults()
@@ -38,7 +38,7 @@ namespace Polarities.Items.Weapons.Ranged.Ammo
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("{$Mods.Polarities.ItemName.BatArrow}");
+            // DisplayName.SetDefault("{$Mods.Polarities.ItemName.BatArrow}");
 
             Main.projFrames[Projectile.type] = 4;
         }
@@ -58,8 +58,7 @@ namespace Polarities.Items.Weapons.Ranged.Ammo
             Projectile.tileCollide = true;
         }
 
-        public override void AI()
-        {
+        public override void AI() {
             Projectile.rotation = Projectile.velocity.ToRotation() + (float)Math.PI / 2;
             Projectile.spriteDirection = (Projectile.velocity.X > 0) ? 1 : -1;
 
@@ -67,16 +66,13 @@ namespace Polarities.Items.Weapons.Ranged.Ammo
 
             NPC target = Projectile.FindTargetWithinRange(400);
 
-            if (target != null)
-            {
+            if (target != null) {
                 Vector2 a = target.Center - Projectile.Center;
-                if (a.Length() > 1)
-                {
+                if (a.Length() > 1) {
                     a /= a.LengthSquared();
                 }
                 a *= 40f;
-                if (a.Length() > 0.5f)
-                {
+                if (a.Length() > 0.5f) {
                     a.Normalize();
                     a *= 0.5f;
                 }
@@ -84,24 +80,21 @@ namespace Polarities.Items.Weapons.Ranged.Ammo
             }
 
             Projectile.frameCounter++;
-            if (Projectile.frameCounter == 5)
-            {
+            if (Projectile.frameCounter == 5) {
                 Projectile.frameCounter = 0;
                 Projectile.frame = (Projectile.frame + 1) % 4;
             }
         }
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             Projectile.Kill();
         }
-        public override void OnHitPlayer(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             Projectile.Kill();
         }
-        public override void OnHitPvp(Player target, int damage, bool crit)
-        {
-            Projectile.Kill();
-        }
+
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
             Projectile.Kill();

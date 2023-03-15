@@ -189,7 +189,7 @@ namespace Polarities.NPCs.Enemies
             NPC.GetGlobalNPC<MultiHitboxNPC>().AssignHitboxFrom(hitboxes);
         }
 
-        public override void ModifyHitPlayer(Player target, ref int damage, ref bool crit)
+        public override void ModifyHitPlayer(Player target, ref Player.HurtModifiers modifiers)
         {
             if (NPC.GetGlobalNPC<MultiHitboxNPC>().mostRecentHitbox.index == 0)
             {
@@ -197,11 +197,11 @@ namespace Polarities.NPCs.Enemies
             }
             else
             {
-                damage /= 2;
+                modifiers.SourceDamage *= 0.5f;
             }
         }
 
-        public override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit)
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
         {
             if (NPC.GetGlobalNPC<MultiHitboxNPC>().mostRecentHitbox.index == 0)
             {
@@ -209,7 +209,7 @@ namespace Polarities.NPCs.Enemies
             }
             else
             {
-                damage /= 2;
+                modifiers.SourceDamage *= 0.5f;
             }
         }
 

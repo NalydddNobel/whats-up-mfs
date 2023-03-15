@@ -13,7 +13,7 @@ namespace Polarities.Items.Pets
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = 1;
+            Item.ResearchUnlockCount = 1;
         }
 
         public override void SetDefaults()
@@ -67,7 +67,7 @@ namespace Polarities.Items.Pets
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Mini Menger");
+            // DisplayName.SetDefault("Mini Menger");
             Main.projFrames[Projectile.type] = 1;
             Main.projPet[Projectile.type] = true;
             ProjectileID.Sets.LightPet[Projectile.type] = true;

@@ -437,7 +437,7 @@ namespace Polarities.NPCs.Enemies.Fractal.PostSentinel
             NPC.active = Main.npc[NPC.realLife].active;
         }
 
-        public override void OnHitByProjectile(Projectile projectile, int damage, float knockback, bool crit)
+        public override void OnHitByProjectile(Projectile projectile, NPC.HitInfo hit, int damageDone)
         {
             List<int> hitboxIds = new List<int>();
             for (int i = 0; i < Main.npc.Length; i++)
@@ -472,7 +472,7 @@ namespace Polarities.NPCs.Enemies.Fractal.PostSentinel
             }
         }
 
-        public override void OnHitByItem(Player player, Item item, int damage, float knockback, bool crit)
+        public override void OnHitByItem(Player player, Item item, NPC.HitInfo hit, int damageDone)
         {
             List<int> hitboxIds = new List<int>();
             for (int i = 0; i < Main.npc.Length; i++)

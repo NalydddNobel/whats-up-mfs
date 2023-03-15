@@ -12,7 +12,7 @@ namespace Polarities.Items
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
 
             ItemID.Sets.SortingPriorityBossSpawns[Item.type] = 12;
         }

@@ -43,7 +43,7 @@ namespace Polarities.NPCs.Enemies.Fractal
             NPC.GetGlobalNPC<PolaritiesNPC>().projectileHitCooldownTime = 10;
         }
 
-        public override void HitEffect(int hitDirection, double damage)
+        public override void HitEffect(NPC.HitInfo hit)
         {
             if (NPC.life <= 0 && Main.netMode != NetmodeID.Server)
             {
@@ -148,7 +148,7 @@ namespace Polarities.NPCs.Enemies.Fractal
             NPC.velocity += (goalVelocity - NPC.velocity) / 20;
         }
 
-        public override void OnHitPlayer(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
         {
             target.AddBuff(BuffID.Confused, 10, true);
         }

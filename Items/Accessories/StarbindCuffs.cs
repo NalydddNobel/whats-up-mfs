@@ -12,7 +12,7 @@ namespace Polarities.Items.Accessories
     {
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (1);
+            Item.ResearchUnlockCount = (1);
 
             ArmorIDs.HandOn.Sets.UsesOldFramingTexturesForWalking[EquipLoader.GetEquipSlot(Mod, Name, EquipType.HandsOn)] = true;
             TextureAssets.AccHandsOn[EquipLoader.GetEquipSlot(Mod, Name, EquipType.HandsOn)] = Request<Texture2D>(Texture + "_HandsOn_Old");

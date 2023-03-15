@@ -276,7 +276,7 @@ namespace Polarities.NPCs.Enemies.Fractal.PostSentinel
             return NPC.ai[0] == 0 && NPC.ai[1] <= 90;
         }
 
-        public override bool? CanHitNPC(NPC target)
+        public override bool CanHitNPC(NPC target)/* tModPorter Suggestion: Return true instead of null */
         {
             return NPC.ai[0] == 0 && NPC.ai[1] <= 90;
         }

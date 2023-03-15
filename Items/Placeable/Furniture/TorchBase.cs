@@ -21,12 +21,12 @@ namespace Polarities.Items.Placeable.Furniture
 
         public override void SetStaticDefaults()
         {
-            SacrificeTotal = (100);
+            Item.ResearchUnlockCount = (100);
         }
 
         public override void SetDefaults()
         {
-            Item.DefaultToTorch(0, !WaterDeath);
+            Item.DefaultToTorch(0, 0, !WaterDeath);
             Item.createTile = PlaceTile;
             Item.value = Item.sellPrice(copper: 12);
 
