@@ -542,13 +542,13 @@ namespace Polarities
                 if (Main.dayTime)
                 {
                     amountOfDay = 1f - (float)Math.Abs(Main.time - Main.dayLength / 2) / (float)Main.dayLength;
+                    Player.GetDamage(DamageClass.Generic) += 0.12f * amountOfDay;
                 }
                 else
                 {
                     amountOfDay = (float)Math.Abs(Main.time - Main.nightLength / 2) / (float)Main.nightLength;
+                    Player.endurance += 0.1f * (1 - amountOfDay);
                 }
-                Player.GetDamage(DamageClass.Generic) += 0.12f * amountOfDay;
-                Player.endurance *= 1 - 0.1f * (1 - amountOfDay);
             }
 
             //wing time boost

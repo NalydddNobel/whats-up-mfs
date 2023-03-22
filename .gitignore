@@ -1,8 +1,11 @@
 *.user
 *.sln
-*.editorconfig
 .vs/
 .cache/
+# same as .vs/ but for rider
+.idea/
 bin/
 obj/
 Assets/Effects/.compiler
+Assets/Sounds/unused
+*.ase
